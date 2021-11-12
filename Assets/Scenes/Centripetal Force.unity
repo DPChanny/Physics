@@ -373,7 +373,7 @@ MonoBehaviour:
   playerRigidbody: {fileID: 1605497111}
   speed: 10
   direction: {x: 1, y: 0}
-  anchorRotateRange: {fileID: 0}
+  anchorRotateRange: {fileID: 1605497114}
   segments: 200
 --- !u!120 &1605497114
 LineRenderer:
