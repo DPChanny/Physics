@@ -5,19 +5,12 @@ using UnityEngine;
 public class CentripetalForcePlayer : MonoBehaviour
 {
     //구심력 게임 매니저
-    [SerializeField]
-    private CentripletalForceManager manager;
+    private CentripetalForceManager manager;
 
     //플레이어 물리 컴포넌트
-    [SerializeField]
     private Rigidbody2D playerRigidbody;
-    //플레이어 진행 속도
-    [SerializeField]
-    private float speed;
-
-    [HideInInspector]
-    //플레이어 진행 방향
-    public Vector2 direction;
+    //플레이어 이동 방향
+    private Vector2 direction = Vector2.right;
 
     //회전축 유무
     private bool anchored = false;
@@ -30,8 +23,6 @@ public class CentripetalForcePlayer : MonoBehaviour
     //회전축 회전 궤도 렌더러
     [SerializeField]
     private LineRenderer anchorRotateRangeRenderer;
-    //회전축 최대 거리
-    private const float maxAnchorDistance = 10f;
 
     //트랙 범위 렌더러
     [SerializeField]
@@ -40,37 +31,40 @@ public class CentripetalForcePlayer : MonoBehaviour
     [SerializeField]
     private CircleCollider2D trackRangeTrigger;
 
-    //렌더러 모서리 개수
-    [SerializeField]
-    private int segments;
-
     //종료 지점 위치
     private Vector3 finishPointPosition;
 
-    private void Start()
+    private void Awake()
     {
-        //렌더러 모서리 개수 초기화
-        anchorRotateRangeRenderer.positionCount = segments + 1;
-        trackRangeRenderer.positionCount = segments + 1;
+        //플레이어 물리 컴포넌트 초기화
+        playerRigidbody = GetComponent<Rigidbody2D>();
 
         //구심력 게임 매니저 초기화
-        manager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<CentripletalForceManager>();
+        manager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<CentripetalForceManager>();
 
         //트랙 범위 트리거 초기화
-        trackRangeTrigger.radius = manager.TrackRange;
+        trackRangeTrigger.radius = Public.setting.centripetalForceSetting.trackRange;
 
+        //렌더러 위치 개수 초기화
+        anchorRotateRangeRenderer.positionCount = Public.setting.positionCount + 1;
+        trackRangeRenderer.positionCount = Public.setting.positionCount + 1;
+
+    }
+
+    private void Start()
+    {
         //트랙 범위 렌더링
-        float angle = 20f;
+        float angle = 0f;
 
-        for (int i = 0; i < segments + 1; i++)
+        for (int i = 0; i < Public.setting.positionCount + 1; i++)
         {
             trackRangeRenderer.SetPosition(
                 i,
                 new Vector2(
-                    Mathf.Cos(Mathf.Deg2Rad * angle) * manager.TrackRange,
-                    Mathf.Sin(Mathf.Deg2Rad * angle) * manager.TrackRange));
+                    Mathf.Cos(Mathf.Deg2Rad * angle) * Public.setting.centripetalForceSetting.trackRange,
+                    Mathf.Sin(Mathf.Deg2Rad * angle) * Public.setting.centripetalForceSetting.trackRange));
 
-            angle += (360f / segments);
+            angle += (360f / Public.setting.positionCount);
         }
     }
 
@@ -84,7 +78,7 @@ public class CentripetalForcePlayer : MonoBehaviour
         CheckAnchorControl();
     }
 
-    //실패 효과 재생 함수
+    //실패 효과 재생
     private void PlayFailedEffect()
     {
         trackRangeRenderer.startColor = Color.red;
@@ -92,10 +86,10 @@ public class CentripetalForcePlayer : MonoBehaviour
         anchorRotateRangeRenderer.enabled = false;
     }
 
-    //성공 효과 코루틴 변수
+    //성공 효과 코루틴
     private IEnumerator SucceedEffectI = null;
 
-    //성공 효과 재생 함수
+    //성공 효과 재생
     private void PlaySucceedEffect()
     {
         anchorRotateRangeRenderer.enabled = false;
@@ -107,12 +101,12 @@ public class CentripetalForcePlayer : MonoBehaviour
         StartCoroutine(SucceedEffectI);
     }
 
-    //성공 효과 코루틴 함수
+    //성공 효과 코루틴
     private IEnumerator SucceedEffect()
     {
         while (true)
         {
-            playerRigidbody.MovePosition(Vector3.Lerp(playerRigidbody.position, finishPointPosition, speed * Time.deltaTime));
+            playerRigidbody.MovePosition(Vector3.Lerp(playerRigidbody.position, finishPointPosition, Public.setting.centripetalForceSetting.speed * Time.deltaTime));
 
             if(Vector3.Distance(playerRigidbody.position, finishPointPosition) < 0.005f)
             {
@@ -124,7 +118,7 @@ public class CentripetalForcePlayer : MonoBehaviour
         }
     }
 
-    //회전축 조작 확인 함수
+    //회전축 조작 확인
     private void CheckAnchorControl()
     {
         //마우스 클릭 시 회전축 생성
@@ -135,31 +129,28 @@ public class CentripetalForcePlayer : MonoBehaviour
 
             anchorDistance = Vector3.Distance(anchorPosition, playerRigidbody.position);
 
-            if (anchorDistance < maxAnchorDistance)
+            anchorRotateRangeRenderer.enabled = true;
+
+            //회전축 회전 방향 계산
+            float rotationDirectionAngle = Vector2.SignedAngle(
+                anchorPosition - playerRigidbody.position,
+                direction);
+            rotateDirection = rotationDirectionAngle / Mathf.Abs(rotationDirectionAngle);
+
+            anchored = true;
+
+            //휘전축 궤도 렌더링
+            float angle = 0f;
+
+            for (int i = 0; i < Public.setting.positionCount + 1; i++)
             {
-                anchorRotateRangeRenderer.enabled = true;
+                anchorRotateRangeRenderer.SetPosition(
+                    i,
+                    anchorPosition + new Vector2(
+                        Mathf.Cos(Mathf.Deg2Rad * angle) * anchorDistance,
+                        Mathf.Sin(Mathf.Deg2Rad * angle) * anchorDistance));
 
-                //회전축 회전 방향 계산
-                float rotationDirectionAngle = Vector2.SignedAngle(
-                    anchorPosition - playerRigidbody.position,
-                    direction);
-                rotateDirection = rotationDirectionAngle / Mathf.Abs(rotationDirectionAngle);
-
-                anchored = true;
-
-                //휘전축 궤도 렌더링
-                float angle = 20f;
-
-                for (int i = 0; i < segments + 1; i++)
-                {
-                    anchorRotateRangeRenderer.SetPosition(
-                        i,
-                        anchorPosition + new Vector2(
-                            Mathf.Cos(Mathf.Deg2Rad * angle) * anchorDistance,
-                            Mathf.Sin(Mathf.Deg2Rad * angle) * anchorDistance));
-
-                    angle += (360f / segments);
-                }
+                angle += (360f / Public.setting.positionCount);
             }
         }
 
@@ -187,7 +178,8 @@ public class CentripetalForcePlayer : MonoBehaviour
             Vector2 _direction = playerRigidbody.position - anchorPosition;
 
             //플레이어 이동 각도
-            float angle = (180 * speed * Time.deltaTime) / (anchorDistance * Mathf.PI);
+            float angle = 
+                (180 * Public.setting.centripetalForceSetting.speed * Time.deltaTime) / (anchorDistance * Mathf.PI);
 
             //플레이어 이동 위치 차이 계산
             float x1 = anchorDistance * Mathf.Cos(Mathf.Deg2Rad * angle);
@@ -208,7 +200,8 @@ public class CentripetalForcePlayer : MonoBehaviour
         else
         {
             //플레이어 진행 방향 이동
-            playerPosition = playerRigidbody.position + direction * speed * Time.deltaTime;
+            playerPosition = playerRigidbody.position + 
+                direction * Public.setting.centripetalForceSetting.speed * Time.deltaTime;
         }
 
         playerRigidbody.MovePosition(playerPosition);

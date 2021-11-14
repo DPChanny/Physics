@@ -345,10 +345,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1518350695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0925367d3bd95ca42a87f4e7e88ea815, type: 3}
+  m_Script: {fileID: 11500000, guid: c0ea271c56471fd4291e9de5272c53e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 1, y: 0}
   spawnPoint: {fileID: 1587481601}
   playerPrefab: {fileID: 5942901808092731081, guid: 2bbae9d19fbd2be46bfd6541d0ff3823, type: 3}
 --- !u!1 &1587481599

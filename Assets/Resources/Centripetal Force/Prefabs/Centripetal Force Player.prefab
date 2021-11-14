@@ -57,7 +57,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8544383430756784771}
   - component: {fileID: 2995539431113212771}
-  - component: {fileID: 4444673243502561840}
   m_Layer: 0
   m_Name: Body Mesh Outter
   m_TagString: Untagged
@@ -130,22 +129,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &4444673243502561840
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1967942062962234673}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!1 &2066920142689064202
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +572,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3953851660813903068}
   - component: {fileID: 3269645665042945098}
-  - component: {fileID: 4871749220780630044}
   m_Layer: 0
   m_Name: Body Mesh Inner
   m_TagString: Untagged
@@ -662,22 +644,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &4871749220780630044
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4692467616688796608}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!1 &5942901808092731081
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,6 +655,7 @@ GameObject:
   - component: {fileID: 5942901808092731083}
   - component: {fileID: 5942901808092731082}
   - component: {fileID: 5942901808092731076}
+  - component: {fileID: 8735256734481800656}
   m_Layer: 0
   m_Name: Centripetal Force Player
   m_TagString: Untagged
@@ -748,11 +715,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaa0d0b5f85630343837f1e3bf6411ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  playerRigidbody: {fileID: 5942901808092731082}
-  speed: 10
-  direction: {x: 0, y: -1}
   anchorRotateRangeRenderer: {fileID: 1795276816806887279}
   trackRangeRenderer: {fileID: 4062428585341545535}
   trackRangeTrigger: {fileID: 5571541283524312691}
-  segments: 200
+--- !u!58 &8735256734481800656
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5942901808092731081}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5

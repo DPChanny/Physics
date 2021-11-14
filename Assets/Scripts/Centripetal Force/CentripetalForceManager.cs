@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 //구심력 게임 매니저
-public class CentripletalForceManager : MonoBehaviour
+public class CentripetalForceManager : MonoBehaviour
 {
     //게임 시작 여부
     private bool started = false;
@@ -14,19 +14,6 @@ public class CentripletalForceManager : MonoBehaviour
         }
     }
 
-    //트랙 범위
-    private float trackRange = 2.5f;
-    public float TrackRange
-    {
-        get
-        {
-            return trackRange;
-        }
-    }
-
-    [SerializeField]
-    private Vector2 direction;
-
     //플레이어 생성 지점
     [SerializeField]
     private Transform spawnPoint;
@@ -35,27 +22,26 @@ public class CentripletalForceManager : MonoBehaviour
     private GameObject playerPrefab;
 
     //플레이어
-    private CentripetalForcePlayer player;
+    private GameObject player;
 
-    //게임 시작 함수
+    //게임 시작
     private void StartGame()
     {
         if(player != null)
         {
-            Destroy(player.gameObject);
+            Destroy(player);
         }
-        player = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity).GetComponent<CentripetalForcePlayer>();
-        player.direction = direction;
+        player = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);
         started = true;
     }
 
-    //게임 실패 함수
+    //게임 실패
     public void FailedGame()
     {
         started = false;
     }
 
-    //게임 성공 함수
+    //게임 성공
     public void SucceedGame()
     {
         started = false;
@@ -69,7 +55,6 @@ public class CentripletalForceManager : MonoBehaviour
         }
         if (!started)
         {
-            //게임 시작 버튼 클릭 시 게임 시작
             if (Input.GetKeyDown(Key.START))
             {
                 StartGame();

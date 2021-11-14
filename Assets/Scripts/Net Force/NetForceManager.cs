@@ -3,19 +3,62 @@ using UnityEngine.SceneManagement;
 
 public class NetForceManager : MonoBehaviour
 {
-    //물체 범위
-    [SerializeField]
-    private float objectRange;
+    //물체 물리 컴포넌트
+    private Rigidbody2D objectRigidbody;
+
     //물체 범위 렌더러
     [SerializeField]
     private LineRenderer objectRangeRenderer;
-    //렌더러 모서리 개수
-    [SerializeField]
-    private int segments;
-
     //물체 범위 트리거
     [SerializeField]
     private CircleCollider2D objectRangeTrigger;
+
+    //플레이어 프리팸
+    [SerializeField]
+    private GameObject playerPrefab;
+    //플레이어 생성 위치
+    [SerializeField]
+    private Transform playerSpawnPoint;
+    //플레이어
+    private GameObject player;
+
+    [SerializeField]
+    //적 프리팹
+    private GameObject enemyPrefab;
+    //적 생성 위치
+    [SerializeField]
+    private Transform enemySpawnPoint;
+    //적
+    private GameObject enemy;
+
+    private void Awake()
+    {
+        //물체 물리 컴포넌트 초기화
+        objectRigidbody = GameObject.FindGameObjectWithTag(Tag.OBJECT).GetComponent<Rigidbody2D>();
+        
+        //물체 범위 트리거 초기화
+        objectRangeTrigger.radius = Public.setting.netForceSetting.objectRange;
+
+        //렌더러 위치 개수 초기화
+        objectRangeRenderer.positionCount = Public.setting.positionCount + 1;
+    }
+
+    private void Start()
+    {
+        //물체 범위 렌더링
+        float angle = 0f;
+
+        for (int i = 0; i < Public.setting.positionCount + 1; i++)
+        {
+            objectRangeRenderer.SetPosition(
+                i,
+                new Vector2(
+                    Mathf.Cos(Mathf.Deg2Rad * angle) * Public.setting.netForceSetting.objectRange,
+                    Mathf.Sin(Mathf.Deg2Rad * angle) * Public.setting.netForceSetting.objectRange));
+
+            angle += (360f / Public.setting.positionCount);
+        }
+    }
 
     //게임 시작 여부
     private bool started = false;
@@ -27,41 +70,36 @@ public class NetForceManager : MonoBehaviour
         }
     }
 
-    //게임 시작 함수
+    //게임 시작
     private void StartGame()
     {
-        //물체 범위 트리거 초기화
-        objectRangeTrigger.radius = objectRange;
+        objectRigidbody.velocity = Vector2.zero;
+        objectRigidbody.position = Vector2.zero;
 
-        //렌더러 모서리 개수 초기화
-        objectRangeRenderer.positionCount = segments + 1;
+        objectRangeRenderer.startColor = Color.blue;
+        objectRangeRenderer.endColor = Color.blue;
 
-        //트랙 범위 렌더링
-        float angle = 20f;
-
-        for (int i = 0; i < segments + 1; i++)
+        if (player != null)
         {
-            objectRangeRenderer.SetPosition(
-                i,
-                new Vector2(
-                    Mathf.Cos(Mathf.Deg2Rad * angle) * objectRange,
-                    Mathf.Sin(Mathf.Deg2Rad * angle) * objectRange));
-
-            angle += (360f / segments);
+            Destroy(player);
         }
+        player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+
+        if (enemy != null)
+        {
+            Destroy(enemy);
+        }
+        enemy = Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
 
         started = true;
     }
 
-    //게임 실패 함수
-    public void FailedGame()
+    //게임 종료
+    public void FinishedGame()
     {
-        started = false;
-    }
+        objectRangeRenderer.startColor = Color.red;
+        objectRangeRenderer.endColor = Color.red;
 
-    //게임 성공 함수
-    public void SucceedGame()
-    {
         started = false;
     }
 
@@ -73,7 +111,6 @@ public class NetForceManager : MonoBehaviour
         }
         if (!started)
         {
-            //게임 시작 버튼 클릭 시 게임 시작
             if (Input.GetKeyDown(Key.START))
             {
                 StartGame();
@@ -81,14 +118,14 @@ public class NetForceManager : MonoBehaviour
         }
     }
 
-    //오브젝트 범위 이탈 확인
+    //물체 범위 이탈 확인
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (started)
         {
             if (collider.CompareTag(Tag.OBJECT))
             {
-                FailedGame();
+                FinishedGame();
             }
         }
     }
