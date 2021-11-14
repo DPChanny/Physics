@@ -60,44 +60,51 @@ public class NetForcePlayer : MonoBehaviour
                 Public.setting.netForceSetting.minForcePower, 
                 Public.setting.netForceSetting.maxForcePower);
 
-        forceRenderer.enabled = forceDirection != ForceDirection.None;
-
-        if (Input.GetMouseButton(Key.MOUSE_LEFT))
-        {
-            forceRenderer.startColor =
-                new Color(
-                    Color.red.r,
-                    Color.red.g,
-                    Color.red.b,
-                    forcePower / Public.setting.netForceSetting.maxForcePower);
-            forceRenderer.endColor =
-                new Color(
-                    Color.red.r,
-                    Color.red.g,
-                    Color.red.b,
-                    forcePower / Public.setting.netForceSetting.maxForcePower);
-            forceDirection = ForceDirection.Pull;
-        }
-        else if (Input.GetMouseButton(Key.MOUSE_RIGHT))
-        {
-            forceRenderer.startColor =
-                new Color(
-                    Color.blue.r,
-                    Color.blue.g,
-                    Color.blue.b,
-                    forcePower / Public.setting.netForceSetting.maxForcePower);
-            forceRenderer.endColor =
-                new Color(
-                    Color.blue.r,
-                    Color.blue.g,
-                    Color.blue.b,
-                    forcePower / Public.setting.netForceSetting.maxForcePower);
-            forceDirection = ForceDirection.Push;
-        }
-        else
+        if(Input.GetMouseButton(Key.MOUSE_LEFT) && Input.GetMouseButton(Key.MOUSE_RIGHT))
         {
             forceDirection = ForceDirection.None;
         }
+        else
+        {
+            if (Input.GetMouseButton(Key.MOUSE_LEFT))
+            {
+                forceRenderer.startColor =
+                    new Color(
+                        Color.red.r,
+                        Color.red.g,
+                        Color.red.b,
+                        forcePower / Public.setting.netForceSetting.maxForcePower);
+                forceRenderer.endColor =
+                    new Color(
+                        Color.red.r,
+                        Color.red.g,
+                        Color.red.b,
+                        forcePower / Public.setting.netForceSetting.maxForcePower);
+                forceDirection = ForceDirection.Pull;
+            }
+            else if (Input.GetMouseButton(Key.MOUSE_RIGHT))
+            {
+                forceRenderer.startColor =
+                    new Color(
+                        Color.blue.r,
+                        Color.blue.g,
+                        Color.blue.b,
+                        forcePower / Public.setting.netForceSetting.maxForcePower);
+                forceRenderer.endColor =
+                    new Color(
+                        Color.blue.r,
+                        Color.blue.g,
+                        Color.blue.b,
+                        forcePower / Public.setting.netForceSetting.maxForcePower);
+                forceDirection = ForceDirection.Push;
+            }
+            else
+            {
+                forceDirection = ForceDirection.None;
+            }
+        }
+
+        forceRenderer.enabled = forceDirection != ForceDirection.None;
 
         objectRigidbody.AddForce(((Vector2)transform.position - objectRigidbody.position).normalized * forcePower * Time.deltaTime * (int)forceDirection);
     }
