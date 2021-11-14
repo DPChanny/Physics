@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //구심력 게임 매니저
 public class CentripletalForceManager : MonoBehaviour
@@ -48,12 +49,13 @@ public class CentripletalForceManager : MonoBehaviour
         started = true;
     }
 
-    //실패 
+    //게임 실패 함수
     public void FailedGame()
     {
         started = false;
     }
 
+    //게임 성공 함수
     public void SucceedGame()
     {
         started = false;
@@ -61,6 +63,10 @@ public class CentripletalForceManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(Key.EXIT))
+        {
+            SceneManager.LoadScene(SceneName.MAIN);
+        }
         if (!started)
         {
             //게임 시작 버튼 클릭 시 게임 시작
