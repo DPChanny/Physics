@@ -1,8 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//구심력 게임 매니저
-public class CentripetalForceManager : MonoBehaviour
+public class LightManager : MonoBehaviour
 {
     //게임 시작 여부
     private bool started = false;
@@ -14,24 +15,24 @@ public class CentripetalForceManager : MonoBehaviour
         }
     }
 
-    //플레이어 생성 지점
+    //빛 생성 지점
     [SerializeField]
-    private Transform playerSpawnPoint;
-    //플레이어 프리팹
+    private Transform lightSpawnPoint;
+    //빛 프리팹
     [SerializeField]
-    private GameObject playerPrefab;
+    private GameObject lightPrefab;
 
-    //플레이어
-    private GameObject player;
+    //빛
+    private GameObject light;
 
     //게임 시작
     private void StartGame()
     {
-        if(player != null)
+        if (light != null)
         {
-            Destroy(player);
+            Destroy(light);
         }
-        player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+        light  = Instantiate(lightPrefab, lightSpawnPoint.position, Quaternion.identity);
         started = true;
     }
 
@@ -45,6 +46,12 @@ public class CentripetalForceManager : MonoBehaviour
     public void SucceedGame()
     {
         started = false;
+    }
+
+
+    private void Start()
+    {
+        
     }
 
     private void Update()

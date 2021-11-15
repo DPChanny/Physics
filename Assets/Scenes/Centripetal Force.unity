@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0ea271c56471fd4291e9de5272c53e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1587481601}
+  playerSpawnPoint: {fileID: 1587481601}
   playerPrefab: {fileID: 5942901808092731081, guid: 2bbae9d19fbd2be46bfd6541d0ff3823, type: 3}
 --- !u!1 &1587481599
 GameObject:
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 1587481601}
   - component: {fileID: 1587481600}
   m_Layer: 0
-  m_Name: Spawn Point
+  m_Name: Player Spawn Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
