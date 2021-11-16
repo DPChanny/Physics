@@ -8,6 +8,7 @@ TagManager:
   - Finish Point
   - Track
   - Object
+  - Range
   layers:
   - Default
   - TransparentFX
@@ -54,6 +55,12 @@ TagManager:
   - name: Trail
     uniqueID: 1615081605
     locked: 0
+  - name: Wall
+    uniqueID: 900044563
+    locked: 0
   - name: Player
     uniqueID: 1835103265
+    locked: 0
+  - name: Light
+    uniqueID: 4000345001
     locked: 0

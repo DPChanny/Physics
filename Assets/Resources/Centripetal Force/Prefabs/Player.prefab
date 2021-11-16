@@ -657,7 +657,7 @@ GameObject:
   - component: {fileID: 5942901808092731076}
   - component: {fileID: 8735256734481800656}
   m_Layer: 0
-  m_Name: Centripetal Force Player
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

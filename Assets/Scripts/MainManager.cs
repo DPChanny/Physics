@@ -15,4 +15,10 @@ public class MainManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneName.NET_FORCE);
     }
+
+    //ºû °ÔÀÓ »øÇà
+    public void OnLight()
+    {
+        SceneManager.LoadScene(SceneName.LIGHT);
+    }
 }

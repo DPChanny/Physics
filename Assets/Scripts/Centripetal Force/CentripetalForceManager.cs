@@ -22,16 +22,16 @@ public class CentripetalForceManager : MonoBehaviour
     private GameObject playerPrefab;
 
     //플레이어
-    private GameObject player;
+    private GameObject playerInstantiated;
 
     //게임 시작
     private void StartGame()
     {
-        if(player != null)
+        if(playerInstantiated != null)
         {
-            Destroy(player);
+            Destroy(playerInstantiated);
         }
-        player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+        playerInstantiated = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
         started = true;
     }
 

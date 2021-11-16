@@ -48,7 +48,6 @@ public class CentripetalForcePlayer : MonoBehaviour
         //렌더러 위치 개수 초기화
         anchorRotateRangeRenderer.positionCount = Public.setting.positionCount + 1;
         trackRangeRenderer.positionCount = Public.setting.positionCount + 1;
-
     }
 
     private void Start()
@@ -87,18 +86,17 @@ public class CentripetalForcePlayer : MonoBehaviour
     }
 
     //성공 효과 코루틴
-    private IEnumerator SucceedEffectI = null;
+    private Coroutine SucceedEffectC = null;
 
     //성공 효과 재생
     private void PlaySucceedEffect()
     {
         anchorRotateRangeRenderer.enabled = false;
-        if (SucceedEffectI != null)
+        if (SucceedEffectC != null)
         {
-            StopCoroutine(SucceedEffectI);
+            StopCoroutine(SucceedEffectC);
         }
-        SucceedEffectI = SucceedEffect();
-        StartCoroutine(SucceedEffectI);
+        SucceedEffectC = StartCoroutine(SucceedEffect());
     }
 
     //성공 효과 코루틴

@@ -3,9 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class NetForceManager : MonoBehaviour
 {
-    //물체 물리 컴포넌트
-    private Rigidbody2D objectRigidbody;
-
     //물체 범위 렌더러
     [SerializeField]
     private LineRenderer objectRangeRenderer;
@@ -20,7 +17,7 @@ public class NetForceManager : MonoBehaviour
     [SerializeField]
     private Transform playerSpawnPoint;
     //플레이어
-    private GameObject player;
+    private GameObject playerInstantiated;
 
     [SerializeField]
     //적 프리팹
@@ -29,18 +26,24 @@ public class NetForceManager : MonoBehaviour
     [SerializeField]
     private Transform enemySpawnPoint;
     //적
-    private GameObject enemy;
+    private GameObject enemyInstantiated;
+
+    //물체 프리팹
+    [SerializeField]
+    private GameObject objectPrefab;
+    //물체 생성 위치
+    [SerializeField]
+    private Transform objectSpawnPoint;
+    //물체
+    private GameObject objectInstantiated;
 
     private void Awake()
     {
-        //물체 물리 컴포넌트 초기화
-        objectRigidbody = GameObject.FindGameObjectWithTag(Tag.OBJECT).GetComponent<Rigidbody2D>();
-        
-        //물체 범위 트리거 초기화
-        objectRangeTrigger.radius = Public.setting.netForceSetting.objectRange;
-
         //렌더러 위치 개수 초기화
         objectRangeRenderer.positionCount = Public.setting.positionCount + 1;
+
+        //물체 범위 트리거 초기화
+        objectRangeTrigger.radius = Public.setting.netForceSetting.objectRange;
     }
 
     private void Start()
@@ -73,29 +76,32 @@ public class NetForceManager : MonoBehaviour
     //게임 시작
     private void StartGame()
     {
-        objectRigidbody.velocity = Vector2.zero;
-        objectRigidbody.position = Vector2.zero;
-
         objectRangeRenderer.startColor = Color.blue;
         objectRangeRenderer.endColor = Color.blue;
 
-        if (player != null)
+        if (objectInstantiated != null)
         {
-            Destroy(player);
+            DestroyImmediate(objectInstantiated);
         }
-        player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+        objectInstantiated = Instantiate(objectPrefab, objectSpawnPoint.position, Quaternion.identity);
 
-        if (enemy != null)
+        if (playerInstantiated != null)
         {
-            Destroy(enemy);
+            Destroy(playerInstantiated);
         }
-        enemy = Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
+        playerInstantiated = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+
+        if (enemyInstantiated != null)
+        {
+            Destroy(enemyInstantiated);
+        }
+        enemyInstantiated = Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
 
         started = true;
     }
 
     //게임 종료
-    public void FinishedGame()
+    public void FinishGame()
     {
         objectRangeRenderer.startColor = Color.red;
         objectRangeRenderer.endColor = Color.red;
@@ -114,18 +120,6 @@ public class NetForceManager : MonoBehaviour
             if (Input.GetKeyDown(Key.START))
             {
                 StartGame();
-            }
-        }
-    }
-
-    //물체 범위 이탈 확인
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        if (started)
-        {
-            if (collider.CompareTag(Tag.OBJECT))
-            {
-                FinishedGame();
             }
         }
     }

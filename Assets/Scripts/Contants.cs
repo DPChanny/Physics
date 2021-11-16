@@ -23,6 +23,7 @@ public static class Tag
     public const string GAME_MANAGER = "Game Manager";
     public const string FINISH_POINT = "Finish Point";
     public const string TRACK = "Track";
+    public const string RANGE = "Range";
     public const string OBJECT = "Object";
 }
 
@@ -32,6 +33,7 @@ public static class SceneName
     public const string CENTRIPETAL_FORCE= "Centripetal Force";
     public const string NET_FORCE = "Net Force";
     public const string MAIN = "Main";
+    public const string LIGHT = "Light";
 }
 
 //게임 설정
