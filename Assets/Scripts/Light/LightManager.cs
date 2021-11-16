@@ -3,6 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class LightManager : MonoBehaviour
 {
+    [SerializeField]
+    private LineRenderer lightRenderer;
+
+    //빛 이동 방향
+    private Vector2 direction = Vector2.right;
+
     //게임 시작 여부
     private bool started = false;
     public bool Started
@@ -13,25 +19,16 @@ public class LightManager : MonoBehaviour
         }
     }
 
-    //빛 생성 지점
-    [SerializeField]
-    private Transform lightSpawnPoint;
-    //빛 프리팹
-    [SerializeField]
-    private GameObject lightPrefab;
-
-    //빛
-    private GameObject light;
-
     //게임 시작
     private void StartGame()
     {
-        if (light != null)
-        {
-            Destroy(light);
-        }
-        light  = Instantiate(lightPrefab, lightSpawnPoint.position, Quaternion.identity);
+        LightSequence();
         started = true;
+    }
+
+    private void LightSequence()
+    {
+
     }
 
     //게임 실패
@@ -44,12 +41,6 @@ public class LightManager : MonoBehaviour
     public void SucceedGame()
     {
         started = false;
-    }
-
-
-    private void Start()
-    {
-        
     }
 
     private void Update()
