@@ -3,7 +3,7 @@ using UnityEngine;
 public class NetForceEnemy : MonoBehaviour
 {
     //합력 게임 매니저
-    private NetForceManager manager;
+    private NetForceManager gameManager;
 
     //물체 물리 컴포넌트
     private Rigidbody2D objectRigidbody;
@@ -27,7 +27,7 @@ public class NetForceEnemy : MonoBehaviour
     private void Awake()
     {
         //합력 게임 매니저 초기화
-        manager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<NetForceManager>();
+        gameManager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<NetForceManager>();
 
         //물체 물리 컴포넌트 초기화
         objectRigidbody = GameObject.FindGameObjectWithTag(Tag.OBJECT).GetComponent<Rigidbody2D>();
@@ -35,7 +35,7 @@ public class NetForceEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (!manager.Started)
+        if (!gameManager.Started)
         {
             forceRenderer.enabled = false;
             return;

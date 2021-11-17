@@ -25,6 +25,8 @@ public static class Tag
     public const string TRACK = "Track";
     public const string RANGE = "Range";
     public const string OBJECT = "Object";
+    public const string MIRROR = "Mirror";
+    public const string OBSTACLE = "Obstacle";
 }
 
 //화면 이름
@@ -40,19 +42,23 @@ public static class SceneName
 public class Setting
 {
     //기본 게임 설정
-    public static Setting defaultSetting = new Setting(CentripetalForceSetting.defaultCentripetalForceSetting, NetForceSetting.defaultNetForceSetting, 200);
+    public static Setting defaultSetting = new Setting(CentripetalForceSetting.defaultCentripetalForceSetting, NetForceSetting.defaultNetForceSetting, LightSetting.defaultLightSetting, 200);
 
     //구심력 게임 설정
     public readonly CentripetalForceSetting centripetalForceSetting;
+    //합력 게임 설정
     public readonly NetForceSetting netForceSetting;
+    //빛 게임 설정
+    public readonly LightSetting lightSetting;
 
     //렌더러 위치 개수
     public readonly int positionCount;
 
-    public Setting(CentripetalForceSetting _centripetalForceSetting, NetForceSetting _netForceSetting,int _positionCount)
+    public Setting(CentripetalForceSetting _centripetalForceSetting, NetForceSetting _netForceSetting, LightSetting _lightSetting, int _positionCount)
     {
         centripetalForceSetting = _centripetalForceSetting;
         netForceSetting = _netForceSetting;
+        lightSetting = _lightSetting;
         positionCount = _positionCount;
     }
 }
@@ -131,6 +137,21 @@ public class NetForceSetting
         enemyForcePowerToggle = _enemyForcePowerToggle;
         enemyForcePowerTogglePercentage = _enemyForcePowerTogglePercentage;
         enemyDefaultForceDirection = _enemyDefaultForceDirection;
+    }
+}
+
+//빛 게임 설정
+public class LightSetting
+{
+    //기본 빛 게임 설정
+    public static LightSetting defaultLightSetting = new LightSetting(10f);
+
+    //빛 이동 속도
+    public readonly float speed;
+
+    public LightSetting(float _speed)
+    {
+        speed = _speed;
     }
 }
 

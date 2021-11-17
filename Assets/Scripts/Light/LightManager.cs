@@ -10,7 +10,7 @@ public class LightManager : MonoBehaviour
     [SerializeField]
     private GameObject lightPrefab;
     //빛
-    private GameObject light;
+    private new GameObject light;
 
     //게임 시작 여부
     private bool started = false;
@@ -25,7 +25,7 @@ public class LightManager : MonoBehaviour
     //게임 시작
     private void StartGame()
     {
-        if(light != null)
+        if (light != null)
         {
             Destroy(light);
         }

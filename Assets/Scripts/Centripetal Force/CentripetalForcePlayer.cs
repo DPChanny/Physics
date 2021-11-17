@@ -5,7 +5,7 @@ using UnityEngine;
 public class CentripetalForcePlayer : MonoBehaviour
 {
     //구심력 게임 매니저
-    private CentripetalForceManager manager;
+    private CentripetalForceManager gameManager;
 
     //플레이어 물리 컴포넌트
     private Rigidbody2D playerRigidbody;
@@ -40,7 +40,7 @@ public class CentripetalForcePlayer : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
 
         //구심력 게임 매니저 초기화
-        manager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<CentripetalForceManager>();
+        gameManager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<CentripetalForceManager>();
 
         //트랙 범위 트리거 초기화
         trackRangeTrigger.radius = Public.setting.centripetalForceSetting.trackRange;
@@ -69,7 +69,7 @@ public class CentripetalForcePlayer : MonoBehaviour
 
     private void Update()
     {
-        if (!manager.Started)
+        if (!gameManager.Started)
         {
             return;
         }
@@ -163,7 +163,7 @@ public class CentripetalForcePlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!manager.Started)
+        if (!gameManager.Started)
         {
             return;
         }
@@ -207,12 +207,12 @@ public class CentripetalForcePlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (manager.Started)
+        if (gameManager.Started)
         {
             //종료 지점 조달 확인
             if (collider.CompareTag(Tag.FINISH_POINT))
             {
-                manager.SucceedGame();
+                gameManager.SucceedGame();
                 finishPointPosition = collider.transform.position;
                 PlaySucceedEffect();
             }
@@ -221,12 +221,12 @@ public class CentripetalForcePlayer : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (manager.Started)
+        if (gameManager.Started)
         {
             //트랙 범위 이탈 확인
             if (collider.CompareTag(Tag.TRACK))
             {
-                manager.FailedGame();
+                gameManager.FailedGame();
                 PlayFailedEffect();
             }
         }

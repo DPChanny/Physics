@@ -12,12 +12,12 @@ public class LightLight : MonoBehaviour
     private Rigidbody2D lightRigidbody;
 
     //빛 게임 매니저
-    private LightManager manager;
+    private LightManager gameManager;
+
     //빛 진행 방향
-    private Vector2 direction = Vector2.right;
+    private Vector2 direction = Vector2.down;
 
     //빛 속도
-    private const float speed = 10f;
     private Collider2D lastCollider;
 
     //종료 지점 위치
@@ -26,7 +26,7 @@ public class LightLight : MonoBehaviour
     private void Awake()
     {
         //빛 게임 매니저 초기화
-        manager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<LightManager>();
+        gameManager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<LightManager>();
     }
 
     private void Start()
@@ -38,7 +38,17 @@ public class LightLight : MonoBehaviour
 
     private void Update()
     {
-        if (!manager.Started)
+        //카메라 상 위치 확인
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        foreach (Plane plane in planes){
+            if(plane.GetDistanceToPoint(lightRigidbody.position) < 0)
+            {
+                gameManager.FailedGame();
+                PlayFailedEffect();
+            }
+        }
+
+        if (!gameManager.Started)
         {
             return;
         }
@@ -48,25 +58,33 @@ public class LightLight : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!manager.Started)
+        if (!gameManager.Started)
         {
             return;
         }
 
-        lightRigidbody.MovePosition(lightRigidbody.position + direction * speed * Time.deltaTime);
+        lightRigidbody.MovePosition(lightRigidbody.position + direction * Public.setting.lightSetting.speed * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (lastCollider != null)
+        if (collision.collider.CompareTag(Tag.MIRROR))
         {
-            lastCollider.enabled = true;
+            if (lastCollider != null)
+            {
+                lastCollider.enabled = true;
+            }
+            direction = Vector2.Reflect(direction, collision.contacts[0].normal);
+            lastCollider = collision.collider;
+            lastCollider.enabled = false;
+            lightRigidbody.position = collision.contacts[0].point;
+            CreatePosition(collision.contacts[0].point);
         }
-        direction = Vector2.Reflect(direction, collision.contacts[0].normal);
-        lastCollider = collision.collider;
-        lastCollider.enabled = false;
-        lightRigidbody.position = collision.contacts[0].point;
-        CreatePosition(collision.contacts[0].point);
+        if (collision.collider.CompareTag(Tag.OBSTACLE))
+        {
+            gameManager.FailedGame();
+            PlayFailedEffect();
+        }
     }
 
     private void CreatePosition(Vector2 _position)
@@ -74,6 +92,18 @@ public class LightLight : MonoBehaviour
         lightRenderer.SetPosition(lightRenderer.positionCount - 1, _position);
         lightRenderer.positionCount += 1;
         lightRenderer.SetPosition(lightRenderer.positionCount - 1, _position);
+    }
+
+
+    //실패 효과 재생
+    private void PlayFailedEffect()
+    {
+        lightRenderer.startColor = Color.red;
+        lightRenderer.endColor = Color.red;
+        if (lastCollider != null)
+        {
+            lastCollider.enabled = true;
+        }
     }
 
     //성공 효과 코루틴
@@ -98,6 +128,7 @@ public class LightLight : MonoBehaviour
     {
         while (true)
         {
+            lightRenderer.SetPosition(lightRenderer.positionCount - 1, lightRigidbody.position);
             lightRigidbody.MovePosition(
                 Vector3.Lerp(
                     lightRigidbody.position, 
@@ -106,6 +137,7 @@ public class LightLight : MonoBehaviour
 
             if (Vector3.Distance(lightRigidbody.position, finishPointPosition) < 0.005f)
             {
+                lightRenderer.SetPosition(lightRenderer.positionCount - 1, finishPointPosition);
                 lightRigidbody.MovePosition(finishPointPosition);
                 yield break;
             }
@@ -114,14 +146,14 @@ public class LightLight : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (manager.Started)
+        if (gameManager.Started)
         {
             //종료 지점 조달 확인
             if (collider.CompareTag(Tag.FINISH_POINT))
             {
-                manager.SucceedGame();
+                gameManager.SucceedGame();
                 finishPointPosition = collider.transform.position;
                 PlaySucceedEffect();
             }
