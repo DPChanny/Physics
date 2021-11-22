@@ -42,7 +42,6 @@ public class LightLight : MonoBehaviour
         foreach (Plane plane in planes){
             if(plane.GetDistanceToPoint(lightRigidbody.position) < 0)
             {
-                gameManager.FailedGame();
                 PlayFailedEffect();
             }
         }
@@ -81,7 +80,6 @@ public class LightLight : MonoBehaviour
         }
         if (collision.collider.CompareTag(Tag.OBSTACLE))
         {
-            gameManager.FailedGame();
             PlayFailedEffect();
         }
     }
@@ -97,6 +95,7 @@ public class LightLight : MonoBehaviour
     //실패 효과 재생
     private void PlayFailedEffect()
     {
+        gameManager.FinishGame();
         lightRenderer.startColor = Color.red;
         lightRenderer.endColor = Color.red;
         if (lastCollider != null)
@@ -111,6 +110,7 @@ public class LightLight : MonoBehaviour
     //성공 효과 재생
     private void PlaySucceedEffect()
     {
+        gameManager.FinishGame();
         if (lastCollider != null)
         {
             lastCollider.enabled = true;
@@ -152,7 +152,6 @@ public class LightLight : MonoBehaviour
             //종료 지점 조달 확인
             if (collider.CompareTag(Tag.FINISH_POINT))
             {
-                gameManager.SucceedGame();
                 finishPointPosition = collider.transform.position;
                 PlaySucceedEffect();
             }

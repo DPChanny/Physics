@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class NetForceManager : MonoBehaviour
 {
@@ -37,13 +38,21 @@ public class NetForceManager : MonoBehaviour
     //물체
     private GameObject objectInstantiated;
 
+    //점수 텍스트
+    [SerializeField]
+    private TextMeshProUGUI TextUI_score;
+    //점수
+    private float score = 0f;
+    //점수 지연 시간
+    private float scoreCoolTime = 0f;
+
     private void Awake()
     {
         //렌더러 위치 개수 초기화
         objectRangeRenderer.positionCount = Public.setting.positionCount + 1;
 
         //물체 범위 트리거 초기화
-        objectRangeTrigger.radius = Public.setting.netForceSetting.objectRange;
+        objectRangeTrigger.radius = Public.setting.netForceSetting.objectRange - 0.5f;
     }
 
     private void Start()
@@ -97,6 +106,9 @@ public class NetForceManager : MonoBehaviour
         }
         enemyInstantiated = Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
 
+        score = 0f;
+        scoreCoolTime = 0f;
+
         started = true;
     }
 
@@ -120,6 +132,22 @@ public class NetForceManager : MonoBehaviour
             if (Input.GetKeyDown(Key.START))
             {
                 StartGame();
+            }
+        }
+        else
+        {
+            TextUI_score.text = score.ToString("n2");
+            if (scoreCoolTime > 1)
+            {
+                scoreCoolTime = 0;
+                score += 1 - 
+                    (Vector3.Distance(
+                        objectInstantiated.transform.position, 
+                        objectSpawnPoint.position) / Public.setting.netForceSetting.objectRange);
+            }
+            else
+            {
+                scoreCoolTime += Time.deltaTime;
             }
         }
     }

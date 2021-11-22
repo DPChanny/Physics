@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LightManager : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class LightManager : MonoBehaviour
     private GameObject lightPrefab;
     //빛
     private new GameObject light;
+
+    //경과 시간 텍스트
+    [SerializeField]
+    private TextMeshProUGUI TextUI_elapsedTime;
+    //경과 시간
+    private float elapsedTime = 0f;
 
     //게임 시작 여부
     private bool started = false;
@@ -31,17 +38,13 @@ public class LightManager : MonoBehaviour
         }
         light = Instantiate(lightPrefab, lightSpawnPoint.position, Quaternion.identity);
 
+        elapsedTime = 0f;
+
         started = true;
     }
 
-    //게임 실패
-    public void FailedGame()
-    {
-        started = false;
-    }
-
-    //게임 성공
-    public void SucceedGame()
+    //게임 종료
+    public void FinishGame()
     {
         started = false;
     }
@@ -58,6 +61,11 @@ public class LightManager : MonoBehaviour
             {
                 StartGame();
             }
+        }
+        else
+        {
+            elapsedTime += Time.deltaTime;
+            TextUI_elapsedTime.text = elapsedTime.ToString("n2");
         }
     }
 }

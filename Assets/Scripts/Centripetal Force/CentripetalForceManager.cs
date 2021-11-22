@@ -20,7 +20,6 @@ public class CentripetalForceManager : MonoBehaviour
     //플레이어 프리팹
     [SerializeField]
     private GameObject playerPrefab;
-
     //플레이어
     private GameObject playerInstantiated;
 
@@ -35,14 +34,8 @@ public class CentripetalForceManager : MonoBehaviour
         started = true;
     }
 
-    //게임 실패
-    public void FailedGame()
-    {
-        started = false;
-    }
-
-    //게임 성공
-    public void SucceedGame()
+    //게임 종료
+    public void FinishGame()
     {
         started = false;
     }

@@ -80,9 +80,10 @@ public class CentripetalForcePlayer : MonoBehaviour
     //실패 효과 재생
     private void PlayFailedEffect()
     {
+        gameManager.FinishGame();
+        anchorRotateRangeRenderer.enabled = false;
         trackRangeRenderer.startColor = Color.red;
         trackRangeRenderer.endColor = Color.red;
-        anchorRotateRangeRenderer.enabled = false;
     }
 
     //성공 효과 코루틴
@@ -91,6 +92,7 @@ public class CentripetalForcePlayer : MonoBehaviour
     //성공 효과 재생
     private void PlaySucceedEffect()
     {
+        gameManager.FinishGame();
         anchorRotateRangeRenderer.enabled = false;
         if (SucceedEffectC != null)
         {
@@ -212,7 +214,6 @@ public class CentripetalForcePlayer : MonoBehaviour
             //종료 지점 조달 확인
             if (collider.CompareTag(Tag.FINISH_POINT))
             {
-                gameManager.SucceedGame();
                 finishPointPosition = collider.transform.position;
                 PlaySucceedEffect();
             }
@@ -226,7 +227,6 @@ public class CentripetalForcePlayer : MonoBehaviour
             //트랙 범위 이탈 확인
             if (collider.CompareTag(Tag.TRACK))
             {
-                gameManager.FailedGame();
                 PlayFailedEffect();
             }
         }
