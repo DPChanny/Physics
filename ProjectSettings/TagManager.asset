@@ -4,18 +4,17 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Game Manager
-  - Finish Point
-  - Track
   - Object
   - Range
   - Mirror
   - Obstacle
+  - GameManager
+  - FinishPoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Track
+  - Range
   - Water
   - UI
   - 

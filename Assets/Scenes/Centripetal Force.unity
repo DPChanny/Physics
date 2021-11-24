@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 1138270856}
   m_Layer: 0
   m_Name: Finish Point
-  m_TagString: Finish Point
+  m_TagString: FinishPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 1518350697}
   m_Layer: 0
   m_Name: Centripetal Force Manager
-  m_TagString: Game Manager
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 1648078668}
   m_Layer: 3
   m_Name: Track
-  m_TagString: Track
+  m_TagString: Range
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

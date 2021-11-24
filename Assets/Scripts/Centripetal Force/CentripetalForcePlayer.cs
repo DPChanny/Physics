@@ -225,7 +225,7 @@ public class CentripetalForcePlayer : MonoBehaviour
         if (gameManager.Started)
         {
             //트랙 범위 이탈 확인
-            if (collider.CompareTag(Tag.TRACK))
+            if (collider.CompareTag(Tag.RANGE))
             {
                 PlayFailedEffect();
             }

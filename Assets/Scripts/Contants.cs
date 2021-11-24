@@ -11,18 +11,11 @@ public static class Key
     public const int MOUSE_RIGHT = 1;
 }
 
-//레이어 이름
-public static class LayerName
-{
-    public const string TRACK = "Track";
-}
-
 //태그
 public static class Tag
 {
-    public const string GAME_MANAGER = "Game Manager";
-    public const string FINISH_POINT = "Finish Point";
-    public const string TRACK = "Track";
+    public const string GAME_MANAGER = "GameManager";
+    public const string FINISH_POINT = "FinishPoint";
     public const string RANGE = "Range";
     public const string OBJECT = "Object";
     public const string MIRROR = "Mirror";
@@ -85,7 +78,7 @@ public class CentripetalForceSetting
 public class NetForceSetting
 {
     //기본 합력 게임 설정
-    public static NetForceSetting defaultNetForceSetting = new NetForceSetting(2.5f, 2f, 500f, 250, 250f, true, true, 50f, true, 25f, ForceDirection.None);
+    public static NetForceSetting defaultNetForceSetting = new NetForceSetting(2.5f, 2.5f, 500f, 250, 250f, true, true, 50f, true, 25f, ForceDirection.None);
 
     //물체 범위
     public readonly float objectRange;

@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5872108831756824469}
   - component: {fileID: 5872108831756824466}
   - component: {fileID: -3696791312384676607}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Object
   m_TagString: Object
   m_Icon: {fileID: 0}
@@ -165,4 +165,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c066a610121c92b4e9e424901b40da4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectRangeTrigger: {fileID: 0}
