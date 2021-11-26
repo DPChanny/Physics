@@ -35,7 +35,11 @@ public static class SceneName
 public class Setting
 {
     //기본 게임 설정
-    public static Setting defaultSetting = new Setting(CentripetalForceSetting.defaultCentripetalForceSetting, NetForceSetting.defaultNetForceSetting, LightSetting.defaultLightSetting, 200);
+    public static Setting defaultSetting = new Setting(
+        CentripetalForceSetting.defaultCentripetalForceSetting, 
+        NetForceSetting.defaultNetForceSetting, 
+        LightSetting.defaultLightSetting, 
+        200);
 
     //구심력 게임 설정
     public readonly CentripetalForceSetting centripetalForceSetting;
@@ -59,8 +63,15 @@ public class Setting
 //구심력 게임 설정
 public class CentripetalForceSetting
 {
+    //쉬움 구심력 게임 설정
+    public static CentripetalForceSetting easyCentripetalForceSetting = new CentripetalForceSetting(10f, 3f);
+    //보통 구심력 게임 설정
+    public static CentripetalForceSetting normalCentripetalForceSetting = new CentripetalForceSetting(12.5f, 2.5f);
+    //어려움 구심력 게임 설정
+    public static CentripetalForceSetting hardCentripetalForceSetting = new CentripetalForceSetting(15f, 2f);
+
     //기본 구심력 게임 설정
-    public static CentripetalForceSetting defaultCentripetalForceSetting = new CentripetalForceSetting(10f, 2.5f);
+    public static CentripetalForceSetting defaultCentripetalForceSetting = normalCentripetalForceSetting;
 
     //플레이어 이동 속도
     public readonly float speed;
@@ -78,7 +89,7 @@ public class CentripetalForceSetting
 public class NetForceSetting
 {
     //기본 합력 게임 설정
-    public static NetForceSetting defaultNetForceSetting = new NetForceSetting(2.5f, 2.5f, 500f, 250, 250f, true, true, 50f, true, 25f, ForceDirection.None);
+    public static NetForceSetting defaultNetForceSetting = new NetForceSetting(2.5f, 2.5f, 500f, 250, 250f, true, true, 75f, true, 50f, ForceDirection.None);
 
     //물체 범위
     public readonly float objectRange;
@@ -123,7 +134,7 @@ public class NetForceSetting
         maxForcePower = _maxForcePower;
         minForcePower = _minForcePower;
         defaultForcePower = _defaultForcePower;
-        moveRange = 5f;
+        moveRange = 7.5f;
         enemyMove = _enemyMove;
         enemyForceDirectionToggle = _enemyForceDirectionToggle;
         enemyForceDirectionTogglePercentage = _enemyForceDirectionTogglePercentage;
