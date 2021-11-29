@@ -573,7 +573,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8641770178141919698, guid: f00e36488c06253458b81b4b29bdd274, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8641770178141919699, guid: f00e36488c06253458b81b4b29bdd274, type: 3}
       propertyPath: m_Pivot.x

@@ -7,6 +7,7 @@ public static class Key
     public const KeyCode EXIT = KeyCode.Escape;
     public const KeyCode DOWN = KeyCode.S;
     public const KeyCode UP = KeyCode.W;
+    public const KeyCode DIFFICULTY_MANAGER = KeyCode.BackQuote;
     public const int MOUSE_LEFT = 0;
     public const int MOUSE_RIGHT = 1;
 }
@@ -20,6 +21,7 @@ public static class Tag
     public const string OBJECT = "Object";
     public const string MIRROR = "Mirror";
     public const string OBSTACLE = "Obstacle";
+    public const string DIFFICULTY_MANAGER = "DifficultyManager";
 }
 
 //화면 이름
@@ -35,14 +37,23 @@ public static class SceneName
 public class Setting
 {
     //기본 게임 설정
-    public static Setting defaultSetting = new Setting(
-        CentripetalForceSetting.defaultCentripetalForceSetting, 
+    public readonly static Setting defaultSetting = new Setting(
+        CentripetalForceSetting.defaultCentripetalForceDifficulty, 
         NetForceSetting.defaultNetForceSetting, 
         LightSetting.defaultLightSetting, 
         200);
 
+    //구심력 게임 난이도
+    public Difficulty centripetalForceDifficulty;
     //구심력 게임 설정
-    public readonly CentripetalForceSetting centripetalForceSetting;
+    public ref CentripetalForceSetting centripetalForceSetting
+    {
+        get
+        {
+            return ref CentripetalForceSetting.centripetalForceSettings[(int)centripetalForceDifficulty];
+        }
+    }
+
     //합력 게임 설정
     public readonly NetForceSetting netForceSetting;
     //빛 게임 설정
@@ -51,9 +62,9 @@ public class Setting
     //렌더러 위치 개수
     public readonly int positionCount;
 
-    public Setting(CentripetalForceSetting _centripetalForceSetting, NetForceSetting _netForceSetting, LightSetting _lightSetting, int _positionCount)
+    public Setting(Difficulty _centripetalForceDifficulty, NetForceSetting _netForceSetting, LightSetting _lightSetting, int _positionCount)
     {
-        centripetalForceSetting = _centripetalForceSetting;
+        centripetalForceDifficulty = _centripetalForceDifficulty;
         netForceSetting = _netForceSetting;
         lightSetting = _lightSetting;
         positionCount = _positionCount;
@@ -64,19 +75,24 @@ public class Setting
 public class CentripetalForceSetting
 {
     //쉬움 구심력 게임 설정
-    public static CentripetalForceSetting easyCentripetalForceSetting = new CentripetalForceSetting(10f, 3f);
+    private readonly static CentripetalForceSetting easyCentripetalForceSetting = new CentripetalForceSetting(10f, 3f);
     //보통 구심력 게임 설정
-    public static CentripetalForceSetting normalCentripetalForceSetting = new CentripetalForceSetting(12.5f, 2.5f);
+    private readonly static CentripetalForceSetting normalCentripetalForceSetting = new CentripetalForceSetting(15f, 2.5f);
     //어려움 구심력 게임 설정
-    public static CentripetalForceSetting hardCentripetalForceSetting = new CentripetalForceSetting(15f, 2f);
+    private readonly static CentripetalForceSetting hardCentripetalForceSetting = new CentripetalForceSetting(20f, 2f);
+    //사용자 설정 구심력 게임 설정
+    private readonly static CentripetalForceSetting customCentripetalForceSetting = normalCentripetalForceSetting;
 
-    //기본 구심력 게임 설정
-    public static CentripetalForceSetting defaultCentripetalForceSetting = normalCentripetalForceSetting;
+    //구심력 게임 설정 리스트
+    public static CentripetalForceSetting[] centripetalForceSettings = { easyCentripetalForceSetting, normalCentripetalForceSetting, hardCentripetalForceSetting, customCentripetalForceSetting };
 
-    //플레이어 이동 속도
-    public readonly float speed;
+    //기본 구심력 게임 난이도
+    public readonly static Difficulty defaultCentripetalForceDifficulty = Difficulty.Normal;
+
+    //이동 속도
+    public float speed;
     //트랙 범위
-    public readonly float trackRange;
+    public float trackRange;
 
     public CentripetalForceSetting(float _speed, float _trackRange)
     {
@@ -89,7 +105,8 @@ public class CentripetalForceSetting
 public class NetForceSetting
 {
     //기본 합력 게임 설정
-    public static NetForceSetting defaultNetForceSetting = new NetForceSetting(2.5f, 2.5f, 500f, 250, 250f, true, true, 75f, true, 50f, ForceDirection.None);
+    public readonly static NetForceSetting defaultNetForceSetting = 
+        new NetForceSetting(2.5f, 2.5f, 500f, 250, 250f, true, true, 75f, true, 50f, ForceDirection.None);
 
     //물체 범위
     public readonly float objectRange;
@@ -148,7 +165,7 @@ public class NetForceSetting
 public class LightSetting
 {
     //기본 빛 게임 설정
-    public static LightSetting defaultLightSetting = new LightSetting(10f);
+    public readonly static LightSetting defaultLightSetting = new LightSetting(10f);
 
     //빛 이동 속도
     public readonly float speed;
@@ -165,4 +182,13 @@ public enum ForceDirection
     Push = -1,
     None = 0,
     Pull = 1,
+}
+
+//난이도
+public enum Difficulty
+{
+    Easy,
+    Normal,
+    Hard,
+    Custom
 }

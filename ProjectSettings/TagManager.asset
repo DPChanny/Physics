@@ -10,6 +10,7 @@ TagManager:
   - Obstacle
   - GameManager
   - FinishPoint
+  - DifficultyManager
   layers:
   - Default
   - TransparentFX
