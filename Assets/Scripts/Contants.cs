@@ -39,7 +39,7 @@ public class Setting
     //기본 게임 설정
     public readonly static Setting defaultSetting = new Setting(
         CentripetalForceSetting.defaultCentripetalForceDifficulty, 
-        NetForceSetting.defaultNetForceSetting, 
+        NetForceSetting.defaultNetForceDifficulty, 
         LightSetting.defaultLightSetting, 
         200);
 
@@ -54,18 +54,27 @@ public class Setting
         }
     }
 
+    //합력 게임 난이도
+    public Difficulty netForceDifficulty;
     //합력 게임 설정
-    public readonly NetForceSetting netForceSetting;
+    public ref NetForceSetting netForceSetting
+    {
+        get
+        {
+            return ref NetForceSetting.netForceSettings[(int)netForceDifficulty];
+        }
+    }
+
     //빛 게임 설정
     public readonly LightSetting lightSetting;
 
     //렌더러 위치 개수
     public readonly int positionCount;
 
-    public Setting(Difficulty _centripetalForceDifficulty, NetForceSetting _netForceSetting, LightSetting _lightSetting, int _positionCount)
+    public Setting(Difficulty _centripetalForceDifficulty, Difficulty _netForceDfficulty, LightSetting _lightSetting, int _positionCount)
     {
         centripetalForceDifficulty = _centripetalForceDifficulty;
-        netForceSetting = _netForceSetting;
+        netForceDifficulty = _netForceDfficulty;
         lightSetting = _lightSetting;
         positionCount = _positionCount;
     }
@@ -84,7 +93,11 @@ public class CentripetalForceSetting
     private readonly static CentripetalForceSetting customCentripetalForceSetting = normalCentripetalForceSetting;
 
     //구심력 게임 설정 리스트
-    public static CentripetalForceSetting[] centripetalForceSettings = { easyCentripetalForceSetting, normalCentripetalForceSetting, hardCentripetalForceSetting, customCentripetalForceSetting };
+    public static CentripetalForceSetting[] centripetalForceSettings = { 
+        easyCentripetalForceSetting, 
+        normalCentripetalForceSetting, 
+        hardCentripetalForceSetting, 
+        customCentripetalForceSetting };
 
     //기본 구심력 게임 난이도
     public readonly static Difficulty defaultCentripetalForceDifficulty = Difficulty.Normal;
@@ -104,30 +117,46 @@ public class CentripetalForceSetting
 //합력 게임 설정
 public class NetForceSetting
 {
-    //기본 합력 게임 설정
-    public readonly static NetForceSetting defaultNetForceSetting = 
-        new NetForceSetting(2.5f, 2.5f, 500f, 250, 250f, true, true, 75f, true, 50f, ForceDirection.None);
+    //쉬움 합력 게임 설정
+    private readonly static NetForceSetting easyNetForceSetting =
+        new NetForceSetting(2.5f, 3f, 500f, 250f, true, true, 25f, false, 0f, ForceDirection.None);
+    //보통 합력 게임 설정
+    private readonly static NetForceSetting normalNetForceSetting =
+        new NetForceSetting(3f, 2.5f, 500f, 250f,true, true, 50f, true, 50f, ForceDirection.None);
+    //어려움 합력 게임 설정
+    private readonly static NetForceSetting hardNetForceSetting = 
+        new NetForceSetting(3.5f, 2f, 1000f, 500f, true, true, 75f, true, 75f, ForceDirection.None);
+    //사용자 설정 합력 게임 설정
+    private readonly static NetForceSetting customNetForceSetting = normalNetForceSetting;
+
+    //구심력 게임 설정 리스트
+    public static NetForceSetting[] netForceSettings = {
+        easyNetForceSetting,
+        normalNetForceSetting,
+        hardNetForceSetting,
+        customNetForceSetting};
+
+    //기본 합력 게임 난이도
+    public readonly static Difficulty defaultNetForceDifficulty = Difficulty.Normal;
 
     //물체 범위
-    public readonly float objectRange;
+    public float objectRange;
     //이동 속도
-    public readonly float speed;
+    public float speed;
     //최대 힘 세기
-    public readonly float maxForcePower;
+    public float maxForcePower;
     //최소 힘 세기
-    public readonly float minForcePower;
-    //기본 힘 세기
-    public readonly float defaultForcePower;
+    public float minForcePower;
     //이동 범위
     public readonly float moveRange;
     //적 이동
-    public readonly bool enemyMove;
+    public bool enemyMove;
     //적 힘 방향 전환
-    public readonly bool enemyForceDirectionToggle;
+    public bool enemyForceDirectionToggle;
     //적 힘 방향 전환 확률
     public readonly float enemyForceDirectionTogglePercentage;
     //적 힘 세기 전환
-    public readonly bool enemyForcePowerToggle;
+    public bool enemyForcePowerToggle;
     //적 힘 세기 전환 확률
     public readonly float enemyForcePowerTogglePercentage;
     //적 기본 힘 방향
@@ -138,7 +167,6 @@ public class NetForceSetting
         float _objectRange, 
         float _maxForcePower, 
         float _minForcePower, 
-        float _defaultForcePower, 
         bool _enemyMove, 
         bool _enemyForceDirectionToggle,
         float _enemyForceDirectionTogglePercentage,
@@ -150,7 +178,6 @@ public class NetForceSetting
         objectRange = _objectRange;
         maxForcePower = _maxForcePower;
         minForcePower = _minForcePower;
-        defaultForcePower = _defaultForcePower;
         moveRange = 7.5f;
         enemyMove = _enemyMove;
         enemyForceDirectionToggle = _enemyForceDirectionToggle;

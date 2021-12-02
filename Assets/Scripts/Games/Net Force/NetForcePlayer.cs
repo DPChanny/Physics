@@ -13,7 +13,7 @@ public class NetForcePlayer : MonoBehaviour
     private LineRenderer forceRenderer;
 
     //힘 세기
-    private float forcePower = Public.setting.netForceSetting.defaultForcePower;
+    private float forcePower = Public.setting.netForceSetting.minForcePower;
 
     //힘 세기 조작 속도
     private const float forcePowerControlSpeed = 100f;

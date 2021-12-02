@@ -13,7 +13,7 @@ public class NetForceEnemy : MonoBehaviour
     private LineRenderer forceRenderer;
 
     //힘 세기
-    private float forcePower = Public.setting.netForceSetting.defaultForcePower;
+    private float forcePower = Public.setting.netForceSetting.minForcePower;
 
     //목표 위치
     private float targetPosition = 0f;

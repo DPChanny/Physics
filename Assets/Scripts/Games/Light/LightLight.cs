@@ -35,17 +35,9 @@ public class LightLight : MonoBehaviour
         lightRenderer.positionCount = 1;
         CreatePosition(lightRigidbody.position);
     }
+
     private void Update()
     {
-        //카메라 상 위치 확인
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-        foreach (Plane plane in planes){
-            if(plane.GetDistanceToPoint(lightRigidbody.position) < 0)
-            {
-                PlayFailedEffect();
-            }
-        }
-
         if (!gameManager.Started)
         {
             return;

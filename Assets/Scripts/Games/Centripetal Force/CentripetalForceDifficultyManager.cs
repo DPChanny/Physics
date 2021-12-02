@@ -8,13 +8,29 @@ public class CentripetalForceDifficultyManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField InputUI_trackRange;
 
-    private void OnEnable()
+    [SerializeField]
+    private GameObject UI;
+
+    private void Init()
     {
         InputUI_speed.interactable = Public.setting.centripetalForceDifficulty == Difficulty.Custom;
         InputUI_trackRange.interactable = Public.setting.centripetalForceDifficulty == Difficulty.Custom;
 
         InputUI_speed.text = Public.setting.centripetalForceSetting.speed.ToString();
         InputUI_trackRange.text = Public.setting.centripetalForceSetting.trackRange.ToString();
+    }
+
+    private void Update()
+    {
+        if (!UI.activeInHierarchy)
+        {
+            if (Input.GetKeyDown(Key.DIFFICULTY_MANAGER))
+            {
+                UI.SetActive(true);
+
+                Init();
+            }
+        }
     }
 
     public void OnConfirm()
@@ -24,11 +40,13 @@ public class CentripetalForceDifficultyManager : MonoBehaviour
             float.TryParse(InputUI_speed.text, out Public.setting.centripetalForceSetting.speed);
             float.TryParse(InputUI_trackRange.text, out Public.setting.centripetalForceSetting.trackRange);
         }
-        gameObject.SetActive(false);
+        UI.SetActive(false);
     }
 
     public void OnDifficulty(int _difficulty)
     {
         Public.setting.centripetalForceDifficulty = (Difficulty)_difficulty;
+
+        Init();
     }
 }
