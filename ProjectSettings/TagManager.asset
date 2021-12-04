@@ -45,8 +45,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3520177905
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: InWall
+    uniqueID: 2959413339
+    locked: 0
+  - name: Furniture
+    uniqueID: 2666742915
+    locked: 0
+  - name: OutWall
+    uniqueID: 428837587
     locked: 0
   - name: Line
     uniqueID: 2448173603
