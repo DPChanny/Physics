@@ -87,7 +87,7 @@ public class CentripetalForcePlayer : MonoBehaviour
     }
 
     //성공 효과 코루틴
-    private Coroutine SucceedEffectC = null;
+    private IEnumerator SucceedEffectC = null;
 
     //성공 효과 재생
     private void PlaySucceedEffect()
@@ -98,7 +98,8 @@ public class CentripetalForcePlayer : MonoBehaviour
         {
             StopCoroutine(SucceedEffectC);
         }
-        SucceedEffectC = StartCoroutine(SucceedEffect());
+        SucceedEffectC = SucceedEffect();
+        StartCoroutine(SucceedEffectC);
     }
 
     //성공 효과 코루틴

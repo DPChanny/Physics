@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class CameraManager : MonoBehaviour
 {
-    private Coroutine MoveToC = null;
+    private IEnumerator MoveToC = null;
 
     public void MoveTo(Transform _target, float _speed, UnityAction _action)
     {
@@ -12,7 +12,8 @@ public class CameraManager : MonoBehaviour
         {
             StopCoroutine(MoveToC);
         }
-        MoveToC = StartCoroutine(MoveToI(_target, _speed, _action));
+        MoveToC = MoveToI(_target, _speed, _action);
+        StartCoroutine(MoveToC);
     }
 
     private IEnumerator MoveToI(Transform _target, float _speed, UnityAction _action)
@@ -35,7 +36,7 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    private Coroutine ZoomInOutC = null;
+    private IEnumerator ZoomInOutC = null;
 
     public void ZoomInOut(float _size, float _speed, UnityAction _action)
     {
@@ -43,7 +44,8 @@ public class CameraManager : MonoBehaviour
         {
             StopCoroutine(ZoomInOutC);
         }
-        ZoomInOutC = StartCoroutine(ZoomInOutI(_size, _speed, _action));
+        ZoomInOutC = ZoomInOutI(_size, _speed, _action);
+        StartCoroutine(ZoomInOutC);
     }
 
     private IEnumerator ZoomInOutI(float _size, float _speed, UnityAction _action)

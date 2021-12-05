@@ -6,9 +6,25 @@ using UnityEngine.SceneManagement;
 public class MainManager : MonoBehaviour
 {
     [SerializeField]
+    private GameObject outWall;
+    [SerializeField]
     private Transform window;
     [SerializeField]
-    private GameObject outWall;
+    private Transform middle;
+    [SerializeField]
+    private Transform bookshelf;
+    [SerializeField]
+    private Transform main;
+
+    private enum CameraStatus
+    {
+        Main,
+        Middle,
+        Window,
+        Bookshelf
+    }
+
+    private CameraStatus cameraStatus = CameraStatus.Main;
 
     //구심력 게임 실행
     public void OnCentripetalForce()
@@ -28,14 +44,87 @@ public class MainManager : MonoBehaviour
         SceneManager.LoadScene(SceneName.LIGHT);
     }
 
-    public void OnWindow()
+    private void Update()
     {
-        Camera.main.GetComponent<CameraManager>().MoveTo(window, 2.5f, new UnityAction(OnOutWallOut));
-        Camera.main.GetComponent<CameraManager>().ZoomInOut(5, 2.5f, null);
+        if (Input.GetKeyDown(Key.EXIT))
+        {
+            if(cameraStatus == CameraStatus.Main)
+            {
+                Application.Quit();
+                return;
+            }
+            if(cameraStatus == CameraStatus.Middle)
+            {
+                SetCameraToWindow(
+                        new UnityAction(() => SetCameraToMain(null)));
+                return;
+            }
+            if (cameraStatus == CameraStatus.Window)
+            {
+                SetCameraToMain(null);
+                return;
+            }
+            if (cameraStatus == CameraStatus.Bookshelf)
+            {
+                SetCameraToMiddle(null);
+                return;
+            }
+        }
     }
 
-    public void OnOutWallOut()
+    public void OnWindow()
     {
-        outWall.GetComponent<FadeManager>().Out(2.5f, null);
+        SetCameraToWindow(
+            new UnityAction(() => SetCameraToMiddle(null)));
+    }
+
+    public void OnDoor()
+    {
+        Application.Quit();
+    }
+
+    public void OnBookshelf()
+    {
+        SetCameraToBookshelf(null);
+    }
+
+    private void SetCameraToWindow(UnityAction _action)
+    {
+        window.gameObject.SetActive(false);
+        bookshelf.gameObject.SetActive(false);
+        outWall.GetComponent<FadeManager>().In(7.5f, null);
+        Camera.main.GetComponent<CameraManager>().MoveTo(window, 7.5f, _action);
+        Camera.main.GetComponent<CameraManager>().ZoomInOut(2f, 7.5f, null);
+        cameraStatus = CameraStatus.Window;
+    }
+
+    private void SetCameraToMiddle(UnityAction _action)
+    {
+        window.gameObject.SetActive(false);
+        bookshelf.gameObject.SetActive(true);
+        outWall.GetComponent<FadeManager>().Out(7.5f, null);
+        Camera.main.GetComponent<CameraManager>().MoveTo(middle, 7.5f, _action);
+        Camera.main.GetComponent<CameraManager>().ZoomInOut(3.5f, 7.5f, null);
+        cameraStatus = CameraStatus.Middle;
+    }
+
+    private void SetCameraToMain(UnityAction _action)
+    {
+        window.gameObject.SetActive(true);
+        bookshelf.gameObject.SetActive(false);
+        outWall.GetComponent<FadeManager>().In(7.5f, null);
+        Camera.main.GetComponent<CameraManager>().MoveTo(main, 7.5f, _action);
+        Camera.main.GetComponent<CameraManager>().ZoomInOut(10f, 7.5f, null);
+        cameraStatus = CameraStatus.Main;
+    }
+
+    public void SetCameraToBookshelf(UnityAction _action)
+    {
+        window.gameObject.SetActive(false);
+        bookshelf.gameObject.SetActive(false);
+        outWall.GetComponent<FadeManager>().Out(7.5f, null);
+        Camera.main.GetComponent<CameraManager>().MoveTo(bookshelf, 7.5f, _action);
+        Camera.main.GetComponent<CameraManager>().ZoomInOut(1.5f, 7.5f, null);
+        cameraStatus = CameraStatus.Bookshelf;
     }
 }

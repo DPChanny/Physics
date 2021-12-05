@@ -11,15 +11,20 @@ public class FadeManager : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private Coroutine OutC = null;
+    private IEnumerator OutC = null;
 
     public void Out(float _speed, UnityAction _action)
     {
+        if (InC != null)
+        {
+            StopCoroutine(InC);
+        }
         if (OutC != null)
         {
             StopCoroutine(OutC);
         }
-        OutC = StartCoroutine(OutI(_speed, _action));
+        OutC = OutI(_speed, _action);
+        StartCoroutine(OutC);
     }
 
     private IEnumerator OutI(float _speed, UnityAction _action)
@@ -55,7 +60,7 @@ public class FadeManager : MonoBehaviour
         }
     }
 
-    private Coroutine InC = null;
+    private IEnumerator InC = null;
 
     public void In(float _speed, UnityAction _action)
     {
@@ -63,7 +68,12 @@ public class FadeManager : MonoBehaviour
         {
             StopCoroutine(InC);
         }
-        InC = StartCoroutine(InI(_speed, _action));
+        if (OutC != null)
+        {
+            StopCoroutine(OutC);
+        }
+        InC = InI(_speed, _action);
+        StartCoroutine(InC);
     }
 
     private IEnumerator InI(float _speed, UnityAction _action)
