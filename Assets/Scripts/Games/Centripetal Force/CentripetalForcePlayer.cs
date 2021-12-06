@@ -80,7 +80,7 @@ public class CentripetalForcePlayer : MonoBehaviour
     //실패 효과 재생
     private void PlayFailedEffect()
     {
-        gameManager.FinishGame();
+        gameManager.FinishGame(false);
         anchorRotateRangeRenderer.enabled = false;
         trackRangeRenderer.startColor = Color.red;
         trackRangeRenderer.endColor = Color.red;
@@ -92,7 +92,7 @@ public class CentripetalForcePlayer : MonoBehaviour
     //성공 효과 재생
     private void PlaySucceedEffect()
     {
-        gameManager.FinishGame();
+        gameManager.FinishGame(true);
         anchorRotateRangeRenderer.enabled = false;
         if (SucceedEffectC != null)
         {

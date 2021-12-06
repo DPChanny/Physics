@@ -11,6 +11,21 @@ public class CentripetalForceDifficultyManager : MonoBehaviour
     [SerializeField]
     private GameObject UI;
 
+    public bool Active
+    {
+        get
+        {
+            return UI.activeInHierarchy;
+        }
+    }
+
+    private CentripetalForceManager gameManager;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<CentripetalForceManager>();
+    }
+
     private void Init()
     {
         InputUI_speed.interactable = Public.setting.centripetalForceDifficulty == Difficulty.Custom;
@@ -22,7 +37,7 @@ public class CentripetalForceDifficultyManager : MonoBehaviour
 
     private void Update()
     {
-        if (!UI.activeInHierarchy)
+        if (!Active && !gameManager.Started)
         {
             if (Input.GetKeyDown(Key.DIFFICULTY_MANAGER))
             {

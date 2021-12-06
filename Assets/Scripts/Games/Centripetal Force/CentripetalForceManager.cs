@@ -23,6 +23,13 @@ public class CentripetalForceManager : MonoBehaviour
     //플레이어
     private GameObject playerInstantiated;
 
+    private CentripetalForceDifficultyManager difficultyManager;
+
+    private void Awake()
+    {
+        difficultyManager = GameObject.FindGameObjectWithTag(Tag.DIFFICULTY_MANAGER).GetComponent<CentripetalForceDifficultyManager>();
+    }
+
     //게임 시작
     private void StartGame()
     {
@@ -35,8 +42,13 @@ public class CentripetalForceManager : MonoBehaviour
     }
 
     //게임 종료
-    public void FinishGame()
+    public void FinishGame(bool _succeed)
     {
+        Public.record.centripetalForceRecords.Add(
+            new CentripetalForceRecord(
+                Public.setting.centripetalForceDifficulty, 
+                Public.setting.centripetalForceSetting, 
+                _succeed));
         started = false;
     }
 
@@ -46,7 +58,7 @@ public class CentripetalForceManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneName.MAIN);
         }
-        if (!started)
+        if (!started && !difficultyManager.Active)
         {
             if (Input.GetKeyDown(Key.START))
             {

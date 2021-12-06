@@ -6,22 +6,32 @@ using UnityEngine.SceneManagement;
 public class MainManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject outWall;
+    private FadeManager outWall; //외벽
     [SerializeField]
-    private Transform window;
+    private Transform window; //창문 위치
     [SerializeField]
-    private Transform middle;
+    private Transform middle; //중앙 위치
     [SerializeField]
-    private Transform bookshelf;
+    private Transform bookshelf; //책장 위치
     [SerializeField]
-    private Transform main;
+    private Transform main; //주 위치
+    [SerializeField]
+    private Transform door; //문 위치
+    [SerializeField]
+    private GameObject note; //노트
 
-    private enum CameraStatus
+    //메인 카메라 매니저
+    private CameraManager mainCamera;
+
+    private void Awake()
     {
-        Main,
-        Middle,
-        Window,
-        Bookshelf
+        if (Public.record == null)
+        {
+            Public.LoadRecords();
+        }
+
+        //메인 카메라 매니저 초기화
+        mainCamera = Camera.main.GetComponent<CameraManager>();
     }
 
     private CameraStatus cameraStatus = CameraStatus.Main;
@@ -48,11 +58,6 @@ public class MainManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Key.EXIT))
         {
-            if(cameraStatus == CameraStatus.Main)
-            {
-                Application.Quit();
-                return;
-            }
             if(cameraStatus == CameraStatus.Middle)
             {
                 SetCameraToWindow(
@@ -72,59 +77,75 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    //창문 버튼
     public void OnWindow()
     {
         SetCameraToWindow(
             new UnityAction(() => SetCameraToMiddle(null)));
     }
 
+    //문 버튼
     public void OnDoor()
     {
+        Public.SaveRecords();
         Application.Quit();
     }
 
+    //책장 버튼
     public void OnBookshelf()
     {
         SetCameraToBookshelf(null);
     }
 
+    //카메라 창문 위치 이동
     private void SetCameraToWindow(UnityAction _action)
     {
+        door.gameObject.SetActive(false);
         window.gameObject.SetActive(false);
+        note.SetActive(false);
         bookshelf.gameObject.SetActive(false);
-        outWall.GetComponent<FadeManager>().In(7.5f, null);
-        Camera.main.GetComponent<CameraManager>().MoveTo(window, 7.5f, _action);
-        Camera.main.GetComponent<CameraManager>().ZoomInOut(2f, 7.5f, null);
+        outWall.In(7.5f, null);
+        mainCamera.MoveTo(window, 7.5f, _action);
+        mainCamera.ZoomInOut(2f, 7.5f, null);
         cameraStatus = CameraStatus.Window;
     }
 
+    //카메라 중앙 위치 이동
     private void SetCameraToMiddle(UnityAction _action)
     {
+        door.gameObject.SetActive(false);
         window.gameObject.SetActive(false);
+        note.SetActive(false);
         bookshelf.gameObject.SetActive(true);
-        outWall.GetComponent<FadeManager>().Out(7.5f, null);
-        Camera.main.GetComponent<CameraManager>().MoveTo(middle, 7.5f, _action);
-        Camera.main.GetComponent<CameraManager>().ZoomInOut(3.5f, 7.5f, null);
+        outWall.Out(7.5f, null);
+        mainCamera.MoveTo(middle, 7.5f, _action);
+        mainCamera.ZoomInOut(3.5f, 7.5f, null);
         cameraStatus = CameraStatus.Middle;
     }
 
+    //카메라 주 위치 이동
     private void SetCameraToMain(UnityAction _action)
     {
+        door.gameObject.SetActive(true);
         window.gameObject.SetActive(true);
+        note.SetActive(false);
         bookshelf.gameObject.SetActive(false);
-        outWall.GetComponent<FadeManager>().In(7.5f, null);
-        Camera.main.GetComponent<CameraManager>().MoveTo(main, 7.5f, _action);
-        Camera.main.GetComponent<CameraManager>().ZoomInOut(10f, 7.5f, null);
+        outWall.In(7.5f, null);
+        mainCamera.MoveTo(main, 7.5f, _action);
+        mainCamera.ZoomInOut(10f, 7.5f, null);
         cameraStatus = CameraStatus.Main;
     }
 
-    public void SetCameraToBookshelf(UnityAction _action)
+    //카메라 책장 위치 이동
+    private void SetCameraToBookshelf(UnityAction _action)
     {
+        door.gameObject.SetActive(false);
         window.gameObject.SetActive(false);
+        note.SetActive(true);
         bookshelf.gameObject.SetActive(false);
-        outWall.GetComponent<FadeManager>().Out(7.5f, null);
-        Camera.main.GetComponent<CameraManager>().MoveTo(bookshelf, 7.5f, _action);
-        Camera.main.GetComponent<CameraManager>().ZoomInOut(1.5f, 7.5f, null);
+        outWall.Out(7.5f, null);
+        mainCamera.MoveTo(bookshelf, 7.5f, _action);
+        mainCamera.ZoomInOut(1.5f, 7.5f, null);
         cameraStatus = CameraStatus.Bookshelf;
     }
 }

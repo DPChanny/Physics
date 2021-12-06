@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 //조작키
@@ -81,6 +82,7 @@ public class Setting
 }
 
 //구심력 게임 설정
+[System.Serializable]
 public class CentripetalForceSetting
 {
     //쉬움 구심력 게임 설정
@@ -93,11 +95,11 @@ public class CentripetalForceSetting
     private readonly static CentripetalForceSetting customCentripetalForceSetting = normalCentripetalForceSetting;
 
     //구심력 게임 설정 리스트
-    public static CentripetalForceSetting[] centripetalForceSettings = { 
-        easyCentripetalForceSetting, 
-        normalCentripetalForceSetting, 
-        hardCentripetalForceSetting, 
-        customCentripetalForceSetting };
+    public static CentripetalForceSetting[] centripetalForceSettings = {
+        new CentripetalForceSetting(easyCentripetalForceSetting),
+        new CentripetalForceSetting(normalCentripetalForceSetting),
+        new CentripetalForceSetting(hardCentripetalForceSetting),
+        new CentripetalForceSetting(customCentripetalForceSetting) };
 
     //기본 구심력 게임 난이도
     public readonly static Difficulty defaultCentripetalForceDifficulty = Difficulty.Normal;
@@ -112,8 +114,15 @@ public class CentripetalForceSetting
         speed = _speed;
         trackRange = _trackRange;
     }
+
+    public CentripetalForceSetting(CentripetalForceSetting _setting)
+    {
+        trackRange = _setting.trackRange;
+        speed = _setting.speed;
+    }
 }
 
+[System.Serializable]
 //합력 게임 설정
 public class NetForceSetting
 {
@@ -131,10 +140,10 @@ public class NetForceSetting
 
     //구심력 게임 설정 리스트
     public static NetForceSetting[] netForceSettings = {
-        easyNetForceSetting,
-        normalNetForceSetting,
-        hardNetForceSetting,
-        customNetForceSetting};
+        new NetForceSetting(easyNetForceSetting),
+        new NetForceSetting(normalNetForceSetting),
+        new NetForceSetting(hardNetForceSetting),
+        new NetForceSetting(customNetForceSetting)};
 
     //기본 합력 게임 난이도
     public readonly static Difficulty defaultNetForceDifficulty = Difficulty.Normal;
@@ -186,6 +195,21 @@ public class NetForceSetting
         enemyForcePowerTogglePercentage = _enemyForcePowerTogglePercentage;
         enemyDefaultForceDirection = _enemyDefaultForceDirection;
     }
+
+    public NetForceSetting(NetForceSetting _netForceSetting)
+    {
+        speed = _netForceSetting.speed;
+        objectRange = _netForceSetting.objectRange;
+        maxForcePower = _netForceSetting.maxForcePower;
+        minForcePower = _netForceSetting.minForcePower;
+        moveRange = 7.5f;
+        enemyMove = _netForceSetting.enemyMove;
+        enemyForceDirectionToggle = _netForceSetting.enemyForceDirectionToggle;
+        enemyForceDirectionTogglePercentage = _netForceSetting.enemyForceDirectionTogglePercentage;
+        enemyForcePowerToggle = _netForceSetting.enemyForcePowerToggle;
+        enemyForcePowerTogglePercentage = _netForceSetting.enemyForcePowerTogglePercentage;
+        enemyDefaultForceDirection = _netForceSetting.enemyDefaultForceDirection;
+    }
 }
 
 //빛 게임 설정
@@ -203,6 +227,103 @@ public class LightSetting
     }
 }
 
+//구심력 게임 기록
+[System.Serializable]
+public class CentripetalForceRecord{
+    
+    //구심력 게임 난이도
+    public Difficulty difficulty;
+
+    //구심력 게임 설정
+    public CentripetalForceSetting setting;
+
+    //완주 여부
+    public bool succeed;
+
+    public CentripetalForceRecord(
+        Difficulty _difficulty, 
+        CentripetalForceSetting _setting,
+        bool _succeed)
+    {
+        setting = new CentripetalForceSetting(_setting);
+        difficulty = _difficulty;
+        succeed = _succeed;
+    }
+}
+
+//합력 게임 기록
+[System.Serializable]
+public class NetForceRecord
+{
+    //합력 게임 난이도
+    public Difficulty difficulty;
+
+    //합력 게임 설정
+    public NetForceSetting setting;
+
+    //점수
+    public float score;
+    
+    public NetForceRecord(Difficulty _difficulty, NetForceSetting _setting, float _score)
+    {
+        difficulty = _difficulty;
+        score = _score;
+        setting = new NetForceSetting(_setting);
+    }
+}
+
+//기록
+public class Record
+{
+    //구심력 게임 기록
+    public List<CentripetalForceRecord> centripetalForceRecords;
+    //합력 게임 기록
+    public List<NetForceRecord> netForceRecords;
+
+    public Record(
+        List<CentripetalForceRecord> _centripetalForceRecords, 
+        List<NetForceRecord> _netForceRecords)
+    {
+        centripetalForceRecords = _centripetalForceRecords;
+        netForceRecords = _netForceRecords;
+    }
+
+    public Record()
+    {
+        centripetalForceRecords = new List<CentripetalForceRecord>();
+        netForceRecords = new List<NetForceRecord>();
+    }
+
+    public RecordWrapper Wrap()
+    {
+        return new RecordWrapper(
+            centripetalForceRecords.ToArray(),
+            netForceRecords.ToArray());
+    }
+}
+
+[System.Serializable]
+public class RecordWrapper
+{
+    public CentripetalForceRecord[] centripetalForceRecords;
+    public NetForceRecord[] netForceRecords;
+
+    public RecordWrapper(
+        CentripetalForceRecord[] _centripetalForceRecords, 
+        NetForceRecord[] _netForceRecord)
+    {
+        centripetalForceRecords = _centripetalForceRecords;
+        netForceRecords = _netForceRecord;
+    }
+
+    public Record Unwrap()
+    {
+        return new Record(
+            new List<CentripetalForceRecord>(centripetalForceRecords),
+            new List<NetForceRecord>(netForceRecords));
+    }
+}
+
 //힘 방향
 public enum ForceDirection
 {
@@ -212,10 +333,20 @@ public enum ForceDirection
 }
 
 //난이도
+[System.Serializable]
 public enum Difficulty
 {
     Easy,
     Normal,
     Hard,
     Custom
+}
+
+//카메라 상태
+public enum CameraStatus
+{
+    Main,
+    Middle,
+    Window,
+    Bookshelf
 }

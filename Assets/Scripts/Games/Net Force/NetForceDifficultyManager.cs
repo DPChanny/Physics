@@ -22,6 +22,21 @@ public class NetForceDifficultyManager : MonoBehaviour
     [SerializeField]
     private GameObject UI;
 
+    public bool Active
+    {
+        get
+        {
+            return UI.activeInHierarchy;
+        }
+    }
+
+    private NetForceManager gameManager;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag(Tag.GAME_MANAGER).GetComponent<NetForceManager>();
+    }
+
     private void Init()
     {
         InputUI_speed.interactable = 
@@ -52,7 +67,7 @@ public class NetForceDifficultyManager : MonoBehaviour
 
     private void Update()
     {
-        if (!UI.activeInHierarchy)
+        if (!Active && !gameManager.Started)
         {
             if (Input.GetKeyDown(Key.DIFFICULTY_MANAGER))
             {

@@ -58,6 +58,14 @@ public class NetForceManager : MonoBehaviour
         }
     }
 
+    private NetForceDifficultyManager difficultyManager;
+
+    private void Awake()
+    {
+        difficultyManager = GameObject.FindGameObjectWithTag(Tag.DIFFICULTY_MANAGER).GetComponent<NetForceDifficultyManager>();
+    }
+
+
     //게임 시작
     private void StartGame()
     {
@@ -79,7 +87,7 @@ public class NetForceManager : MonoBehaviour
         }
         enemyInstantiated = Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
 
-        if(objectRangeInstantiated != null)
+        if (objectRangeInstantiated != null)
         {
             Destroy(objectRangeInstantiated);
         }
@@ -94,6 +102,11 @@ public class NetForceManager : MonoBehaviour
     //게임 종료
     public void FinishGame()
     {
+        Public.record.netForceRecords.Add(
+            new NetForceRecord(
+                Public.setting.netForceDifficulty,
+                Public.setting.netForceSetting,
+                score));
         started = false;
     }
 
@@ -103,27 +116,29 @@ public class NetForceManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneName.MAIN);
         }
-        if (!started)
-        {
-            if (Input.GetKeyDown(Key.START))
+        if (!difficultyManager.Active) {
+            if (!started)
             {
-                StartGame();
-            }
-        }
-        else
-        {
-            TextUI_score.text = score.ToString("n2");
-            if (scoreCoolTime > 1)
-            {
-                scoreCoolTime = 0;
-                score += 1 - 
-                    (Vector3.Distance(
-                        objectInstantiated.transform.position, 
-                        objectSpawnPoint.position) / Public.setting.netForceSetting.objectRange);
+                if (Input.GetKeyDown(Key.START))
+                {
+                    StartGame();
+                }
             }
             else
             {
-                scoreCoolTime += Time.deltaTime;
+                TextUI_score.text = score.ToString("n2");
+                if (scoreCoolTime > 1)
+                {
+                    scoreCoolTime = 0;
+                    score += 1 -
+                        (Vector3.Distance(
+                            objectInstantiated.transform.position,
+                            objectSpawnPoint.position) / Public.setting.netForceSetting.objectRange);
+                }
+                else
+                {
+                    scoreCoolTime += Time.deltaTime;
+                }
             }
         }
     }
