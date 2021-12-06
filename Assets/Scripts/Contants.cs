@@ -32,6 +32,7 @@ public static class SceneName
     public const string NET_FORCE = "Net Force";
     public const string MAIN = "Main";
     public const string LIGHT = "Light";
+    public const string NOTE = "Note";
 }
 
 //게임 설정
@@ -350,4 +351,11 @@ public enum CameraStatus
     Window,
     Bookshelf,
     Desk
+}
+
+public enum Game
+{
+    CentripetalForce,
+    NetForce,
+    Light
 }

@@ -5,6 +5,7 @@ public static class Public
 {
     //게임 설정
     public static Setting setting = Setting.defaultSetting;
+    public static Game game;
     public static Record record = null;
 
     //기록 로드
