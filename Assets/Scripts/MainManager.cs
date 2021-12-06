@@ -18,7 +18,7 @@ public class MainManager : MonoBehaviour
     [SerializeField]
     private Transform door; //문 위치
     [SerializeField]
-    private GameObject note; //노트
+    private Transform desk; //책상 위치
 
     //메인 카메라 매니저
     private CameraManager mainCamera;
@@ -39,19 +39,25 @@ public class MainManager : MonoBehaviour
     //구심력 게임 실행
     public void OnCentripetalForce()
     {
-        SceneManager.LoadScene(SceneName.CENTRIPETAL_FORCE);
+        SetCameraToMiddle(
+            new UnityAction(() => SetCameraToDesk(
+                new UnityAction(() => SceneManager.LoadScene(SceneName.CENTRIPETAL_FORCE)))));
     }
 
     //합력 게임 실행
     public void OnNetForce()
     {
-        SceneManager.LoadScene(SceneName.NET_FORCE);
+        SetCameraToMiddle(
+            new UnityAction(() => SetCameraToDesk(
+                new UnityAction(() => SceneManager.LoadScene(SceneName.NET_FORCE)))));
     }
 
     //빛 게임 샐행
     public void OnLight()
     {
-        SceneManager.LoadScene(SceneName.LIGHT);
+        SetCameraToMiddle(
+            new UnityAction(() => SetCameraToDesk(
+                new UnityAction(() => SceneManager.LoadScene(SceneName.LIGHT)))));
     }
 
     private void Update()
@@ -71,7 +77,15 @@ public class MainManager : MonoBehaviour
             }
             if (cameraStatus == CameraStatus.Bookshelf)
             {
-                SetCameraToMiddle(null);
+                SetCameraToMiddle(
+                    new UnityAction(() => SetCameraToWindow(
+                        new UnityAction(() => SetCameraToMain(null)))));
+                return;
+            }
+            if(cameraStatus == CameraStatus.Desk)
+            {
+                SetCameraToMiddle(
+                    new UnityAction(() => SetCameraToBookshelf(null)));
                 return;
             }
         }
@@ -81,7 +95,8 @@ public class MainManager : MonoBehaviour
     public void OnWindow()
     {
         SetCameraToWindow(
-            new UnityAction(() => SetCameraToMiddle(null)));
+            new UnityAction(() => SetCameraToMiddle(
+                new UnityAction(() => SetCameraToBookshelf(null)))));
     }
 
     //문 버튼
@@ -91,18 +106,11 @@ public class MainManager : MonoBehaviour
         Application.Quit();
     }
 
-    //책장 버튼
-    public void OnBookshelf()
-    {
-        SetCameraToBookshelf(null);
-    }
-
     //카메라 창문 위치 이동
     private void SetCameraToWindow(UnityAction _action)
     {
         door.gameObject.SetActive(false);
         window.gameObject.SetActive(false);
-        note.SetActive(false);
         bookshelf.gameObject.SetActive(false);
         outWall.In(7.5f, null);
         mainCamera.MoveTo(window, 7.5f, _action);
@@ -115,8 +123,7 @@ public class MainManager : MonoBehaviour
     {
         door.gameObject.SetActive(false);
         window.gameObject.SetActive(false);
-        note.SetActive(false);
-        bookshelf.gameObject.SetActive(true);
+        bookshelf.gameObject.SetActive(false);
         outWall.Out(7.5f, null);
         mainCamera.MoveTo(middle, 7.5f, _action);
         mainCamera.ZoomInOut(3.5f, 7.5f, null);
@@ -128,7 +135,6 @@ public class MainManager : MonoBehaviour
     {
         door.gameObject.SetActive(true);
         window.gameObject.SetActive(true);
-        note.SetActive(false);
         bookshelf.gameObject.SetActive(false);
         outWall.In(7.5f, null);
         mainCamera.MoveTo(main, 7.5f, _action);
@@ -141,11 +147,23 @@ public class MainManager : MonoBehaviour
     {
         door.gameObject.SetActive(false);
         window.gameObject.SetActive(false);
-        note.SetActive(true);
-        bookshelf.gameObject.SetActive(false);
+        bookshelf.gameObject.SetActive(true);
         outWall.Out(7.5f, null);
         mainCamera.MoveTo(bookshelf, 7.5f, _action);
         mainCamera.ZoomInOut(1.5f, 7.5f, null);
         cameraStatus = CameraStatus.Bookshelf;
+    }
+
+
+    //카메라 책상 위치 이동
+    private void SetCameraToDesk(UnityAction _action)
+    {
+        door.gameObject.SetActive(false);
+        window.gameObject.SetActive(false);
+        bookshelf.gameObject.SetActive(true);
+        outWall.Out(7.5f, null);
+        mainCamera.MoveTo(desk, 7.5f, _action);
+        mainCamera.ZoomInOut(1.5f, 7.5f, null);
+        cameraStatus = CameraStatus.Desk;
     }
 }

@@ -348,5 +348,6 @@ public enum CameraStatus
     Main,
     Middle,
     Window,
-    Bookshelf
+    Bookshelf,
+    Desk
 }

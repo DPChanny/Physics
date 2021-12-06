@@ -9,7 +9,11 @@ public static class Public
 
     //기록 로드
     public static void LoadRecords()
-{
+    {
+        if (!Directory.Exists(Application.streamingAssetsPath))
+        {
+            Directory.CreateDirectory(Application.streamingAssetsPath);
+        }
         if (!File.Exists(Application.streamingAssetsPath + "/record.json"))
         {
             record = new Record();
@@ -23,6 +27,10 @@ public static class Public
     //기록 저장
     public static void SaveRecords()
     {
+        if (!Directory.Exists(Application.streamingAssetsPath))
+        {
+            Directory.CreateDirectory(Application.streamingAssetsPath);
+        }
         StreamWriter streamWriter = new StreamWriter(Application.streamingAssetsPath + "/record.json", false);
         streamWriter.Write(JsonUtility.ToJson(record.Wrap(), true));
         streamWriter.Close();
