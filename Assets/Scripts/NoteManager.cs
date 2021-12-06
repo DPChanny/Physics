@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class NoteManager : MonoBehaviour
 {
@@ -68,5 +69,13 @@ public class NoteManager : MonoBehaviour
     {
         TextUI_left.text = text[(int)Public.game * 2];
         TextUI_right.text = text[(int)Public.game * 2 + 1];
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(Key.EXIT))
+        {
+            SceneManager.LoadScene(SceneName.MAIN);
+        }
     }
 }

@@ -81,6 +81,15 @@ TagManager:
   - name: Light
     uniqueID: 4000345001
     locked: 0
+  - name: Desk
+    uniqueID: 641288945
+    locked: 0
+  - name: Note
+    uniqueID: 2256945201
+    locked: 0
+  - name: Text
+    uniqueID: 3260829209
+    locked: 0
   - name: UI
     uniqueID: 1367209187
     locked: 0

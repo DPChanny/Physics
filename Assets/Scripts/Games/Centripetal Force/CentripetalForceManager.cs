@@ -56,7 +56,7 @@ public class CentripetalForceManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Key.EXIT))
         {
-            SceneManager.LoadScene(SceneName.MAIN);
+            SceneManager.LoadScene(SceneName.NOTE);
         }
         if (!started && !difficultyManager.Active)
         {
