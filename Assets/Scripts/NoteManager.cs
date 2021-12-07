@@ -75,7 +75,23 @@ public class NoteManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Key.EXIT))
         {
-            SceneManager.LoadScene(SceneName.MAIN);
+            Public.LoadScene(SceneName.MAIN);
+        }
+    }
+
+    public void OnStart()
+    {
+        if(Public.game == Game.NetForce)
+        {
+            Public.LoadScene(SceneName.NET_FORCE);
+        }
+        if (Public.game == Game.CentripetalForce)
+        {
+            Public.LoadScene(SceneName.CENTRIPETAL_FORCE);
+        }
+        if (Public.game == Game.Light)
+        {
+            Public.LoadScene(SceneName.LIGHT);
         }
     }
 }

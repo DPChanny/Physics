@@ -1,5 +1,7 @@
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public static class Public
 {
@@ -35,5 +37,11 @@ public static class Public
         StreamWriter streamWriter = new StreamWriter(Application.streamingAssetsPath + "/record.json", false);
         streamWriter.Write(JsonUtility.ToJson(record.Wrap(), true));
         streamWriter.Close();
+    }
+
+    //화면 로드
+    public static void LoadScene(string _scene)
+    {
+        Camera.main.GetComponent<CameraManager>().In(5, new UnityAction(() => SceneManager.LoadScene(_scene)));
     }
 }

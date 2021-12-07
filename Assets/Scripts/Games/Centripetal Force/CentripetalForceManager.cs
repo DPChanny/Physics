@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 //구심력 게임 매니저
 public class CentripetalForceManager : MonoBehaviour
@@ -56,7 +55,7 @@ public class CentripetalForceManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Key.EXIT))
         {
-            SceneManager.LoadScene(SceneName.NOTE);
+            Public.LoadScene(SceneName.NOTE);
         }
         if (!started && !difficultyManager.Active)
         {

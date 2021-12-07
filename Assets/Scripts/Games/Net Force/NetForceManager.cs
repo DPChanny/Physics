@@ -114,7 +114,7 @@ public class NetForceManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Key.EXIT))
         {
-            SceneManager.LoadScene(SceneName.NOTE);
+            Public.LoadScene(SceneName.NOTE);
         }
         if (!difficultyManager.Active) {
             if (!started)

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 //메인 화면 매니저
 public class MainManager : MonoBehaviour
@@ -40,27 +39,28 @@ public class MainManager : MonoBehaviour
     public void OnCentripetalForce()
     {
         Public.game = Game.CentripetalForce;
-        SetCameraToMiddle(
-            new UnityAction(() => SetCameraToDesk(
-                new UnityAction(() => SceneManager.LoadScene(SceneName.NOTE)))));
+        LoadNote();
     }
 
     //합력 게임 실행
     public void OnNetForce()
     {
         Public.game = Game.NetForce;
-        SetCameraToMiddle(
-            new UnityAction(() => SetCameraToDesk(
-                new UnityAction(() => SceneManager.LoadScene(SceneName.NOTE)))));
+        LoadNote();
     }
 
     //빛 게임 샐행
     public void OnLight()
     {
         Public.game = Game.Light;
+        LoadNote();
+    }
+
+    private void LoadNote()
+    {
         SetCameraToMiddle(
             new UnityAction(() => SetCameraToDesk(
-                new UnityAction(() => SceneManager.LoadScene(SceneName.NOTE)))));
+                new UnityAction(() => Public.LoadScene(SceneName.NOTE)))));
     }
 
     private void Update()

@@ -1,6 +1,5 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine;
 
 public class LightManager : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class LightManager : MonoBehaviour
     [SerializeField]
     private GameObject lightPrefab;
     //빛
-    private new GameObject light;
+    private GameObject lightInstantiated;
 
     //경과 시간 텍스트
     [SerializeField]
@@ -32,11 +31,11 @@ public class LightManager : MonoBehaviour
     //게임 시작
     private void StartGame()
     {
-        if (light != null)
+        if (lightInstantiated != null)
         {
-            Destroy(light);
+            Destroy(lightInstantiated);
         }
-        light = Instantiate(lightPrefab, lightSpawnPoint.position, Quaternion.identity);
+        lightInstantiated = Instantiate(lightPrefab, lightSpawnPoint.position, Quaternion.identity);
 
         elapsedTime = 0f;
 
@@ -53,7 +52,7 @@ public class LightManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Key.EXIT))
         {
-            SceneManager.LoadScene(SceneName.NOTE);
+            Public.LoadScene(SceneName.NOTE);
         }
         if (!started)
         {
