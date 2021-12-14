@@ -1,9 +1,12 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NoteManager : MonoBehaviour
 {
+    [SerializeField]
+    private Sprite[] images;
+
     private const string centripetalForceStringLeft =
 @"구심력
 구심력은 원운동에서 운동의 중심 방향으로 작용하여 물체의 경로를 바꾸는 힘이다.
@@ -46,7 +49,28 @@ public class NoteManager : MonoBehaviour
 힘의 크기는 언제나 0 또는 양의 값을 갖지만, 알짜힘의 계산해서 방향이 반대인 두 힘은 그 중 하나를 음수로 나타내어 계산할 수도 있다.";
 
     private const string netForceStringRight =
-@"";
+@"합력 게임
+게임 목표: 
+    최고 점수
+게임 조작: 
+    마우스 좌 클릭: 인력
+    마우스 우 클릭: 척력
+    W: 위로 이동
+    S: 아래로 이동
+    마우스 스크롤: 힘 세기 전환
+게임 변수: 
+    이동 속도: 플레이어 이동 속도
+    물체 범위: 물체 이탈 허용 범위
+    최대 힘 세기: 최대 힘 세기
+    최소 힘 세기: 최소 힘 세기
+    적 이동: 적 이동 여부
+    적 힘 방향 전환: 적 힘 방향 전환 여부
+    적 힘 세기 전환: 적 힘 세기 전환 여부
+게임 보상:
+         쉬움 보통 어려움
+    1등  3    4    6
+    2등  2    3    5
+    3등  1    2    4";
 
     private const string lightStringLeft =
 @"";
@@ -65,8 +89,12 @@ public class NoteManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI TextUI_right;
 
+    [SerializeField]
+    private Image ImageUI_image;
+
     private void Start()
     {
+        ImageUI_image.sprite = images[(int)Public.game];
         TextUI_left.text = text[(int)Public.game * 2];
         TextUI_right.text = text[(int)Public.game * 2 + 1];
     }
