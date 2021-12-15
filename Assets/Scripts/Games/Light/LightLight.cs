@@ -87,7 +87,7 @@ public class LightLight : MonoBehaviour
     //실패 효과 재생
     private void PlayFailedEffect()
     {
-        gameManager.FinishGame();
+        gameManager.FinishGame(false);
         lightRenderer.startColor = Color.red;
         lightRenderer.endColor = Color.red;
         if (lastCollider != null)
@@ -102,7 +102,7 @@ public class LightLight : MonoBehaviour
     //성공 효과 재생
     private void PlaySucceedEffect()
     {
-        gameManager.FinishGame();
+        gameManager.FinishGame(true);
         if (lastCollider != null)
         {
             lastCollider.enabled = true;

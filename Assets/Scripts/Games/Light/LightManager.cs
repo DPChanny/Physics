@@ -43,8 +43,10 @@ public class LightManager : MonoBehaviour
     }
 
     //게임 종료
-    public void FinishGame()
+    public void FinishGame(bool _succeed)
     {
+        Public.record.lightRecords.Add(
+            new LightRecord(GameObject.FindGameObjectsWithTag(Tag.MIRROR).Length, elapsedTime, _succeed));
         started = false;
     }
 

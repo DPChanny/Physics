@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Note.unity
     guid: 89ad63a52686fd244bbe1987809acf72
   - enabled: 1
+    path: Assets/Scenes/Record.unity
+    guid: 4fd0ca168f60e9446a0b8b294e289343
+  - enabled: 1
     path: Assets/Scenes/Games/Centripetal Force.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1

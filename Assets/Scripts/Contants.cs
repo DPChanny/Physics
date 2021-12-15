@@ -33,6 +33,7 @@ public static class SceneName
     public const string MAIN = "Main";
     public const string LIGHT = "Light";
     public const string NOTE = "Note";
+    public const string RECORD = "Record";
 }
 
 //게임 설정
@@ -231,7 +232,6 @@ public class LightSetting
 //구심력 게임 기록
 [System.Serializable]
 public class CentripetalForceRecord{
-    
     //구심력 게임 난이도
     public Difficulty difficulty;
 
@@ -273,6 +273,25 @@ public class NetForceRecord
     }
 }
 
+//빛 게임 기록
+[System.Serializable]
+public class LightRecord
+{
+    //거울 개수
+    public int mirrorCount;
+    //경과 시간
+    public float elapsedTime;
+    //성공 여부
+    public bool succeed;
+
+    public LightRecord(int _mirrorCount, float _elapsedTime, bool _succeed)
+    {
+        mirrorCount = _mirrorCount;
+        elapsedTime = _elapsedTime;
+        succeed = _succeed;
+    }
+}
+
 //기록
 public class Record
 {
@@ -280,26 +299,32 @@ public class Record
     public List<CentripetalForceRecord> centripetalForceRecords;
     //합력 게임 기록
     public List<NetForceRecord> netForceRecords;
+    //빛 게임 기록
+    public List<LightRecord> lightRecords;
 
     public Record(
         List<CentripetalForceRecord> _centripetalForceRecords, 
-        List<NetForceRecord> _netForceRecords)
+        List<NetForceRecord> _netForceRecords,
+        List<LightRecord> _lightRecords)
     {
         centripetalForceRecords = _centripetalForceRecords;
         netForceRecords = _netForceRecords;
+        lightRecords = _lightRecords;
     }
 
     public Record()
     {
         centripetalForceRecords = new List<CentripetalForceRecord>();
         netForceRecords = new List<NetForceRecord>();
+        lightRecords = new List<LightRecord>();
     }
 
     public RecordWrapper Wrap()
     {
         return new RecordWrapper(
             centripetalForceRecords.ToArray(),
-            netForceRecords.ToArray());
+            netForceRecords.ToArray(),
+            lightRecords.ToArray());
     }
 }
 
@@ -308,20 +333,24 @@ public class RecordWrapper
 {
     public CentripetalForceRecord[] centripetalForceRecords;
     public NetForceRecord[] netForceRecords;
+    public LightRecord[] lightRecords;
 
     public RecordWrapper(
         CentripetalForceRecord[] _centripetalForceRecords, 
-        NetForceRecord[] _netForceRecord)
+        NetForceRecord[] _netForceRecords,
+        LightRecord[] _lightRecords)
     {
         centripetalForceRecords = _centripetalForceRecords;
-        netForceRecords = _netForceRecord;
+        netForceRecords = _netForceRecords;
+        lightRecords = _lightRecords;
     }
 
     public Record Unwrap()
     {
         return new Record(
             new List<CentripetalForceRecord>(centripetalForceRecords),
-            new List<NetForceRecord>(netForceRecords));
+            new List<NetForceRecord>(netForceRecords),
+            new List<LightRecord>(lightRecords));
     }
 }
 

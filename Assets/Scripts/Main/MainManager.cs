@@ -56,6 +56,13 @@ public class MainManager : MonoBehaviour
         LoadNote();
     }
 
+    public void OnRecord()
+    {
+        SetCameraToMiddle(
+            new UnityAction(() => SetCameraToDesk(
+                new UnityAction(() => Public.LoadScene(SceneName.RECORD)))));
+    }
+
     private void LoadNote()
     {
         SetCameraToMiddle(

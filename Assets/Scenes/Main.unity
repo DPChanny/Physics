@@ -1278,7 +1278,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1163110598}
         m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: OnRecord
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
